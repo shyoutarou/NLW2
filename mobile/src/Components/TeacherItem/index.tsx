@@ -1,24 +1,53 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { View, Text, StyleSheet, Image, Linking } from 'react-native'
 import { RectButton } from 'react-native-gesture-handler'
-
+import AsyncStorage from '@react-native-community/async-storage'
 
 interface Teacher {
-    teacher: {
-        id: number
-        avatar: string
-        bio: string
-        cost: number
-        name: string
-        subject: string
-        whatsapp: string
-    }
+    teacher: TeacherProps
+    favorited: boolean
 }
 
-const TeacherItem: React.FC<Teacher> = ({ teacher }) => {
+interface TeacherProps {
+    id: number
+    avatar: string
+    bio: string
+    cost: number
+    name: string
+    subject: string
+    whatsapp: string
+}
+
+const TeacherItem: React.FC<Teacher> = ({ teacher, favorited }) => {
+
+    const [isFavorited, setIsFavorited] = useState(favorited)
 
     const handleWhatsapp = () => {
         Linking.openURL(`whatsapp://send?phone=${teacher.whatsapp}`)
+    }
+
+    const handleToggleFavorite = async () => {
+        const favorites = await AsyncStorage.getItem('favorites')
+        let favoritesArray = []
+
+        if(favorites) {
+            favoritesArray = JSON.parse(favorites)
+        }
+
+        if(isFavorited) {
+            const favoriteIndex = favoritesArray.findIndex((teacherItem: TeacherProps) => {
+                return teacherItem.id === teacher.id
+            })
+
+            favoritesArray.splice(favoriteIndex, 1)
+            setIsFavorited(false)
+        } else {
+            
+
+            favoritesArray.push(teacher)
+            setIsFavorited(true)
+        }
+        await AsyncStorage.setItem('favorites', JSON.stringify(favoritesArray))
     }
 
     return (
@@ -43,9 +72,12 @@ const TeacherItem: React.FC<Teacher> = ({ teacher }) => {
                 </Text>
 
                 <View style={styles.buttonsContainer}>
-                    <RectButton style={[styles.favoriteButton, styles.favorited]}>
-                        {/* <Image source={require('../../../assets/images/icons/heart-outline.png')} /> */}
-                        <Image source={require('../../../assets/images/icons/unfavorite.png')} />
+                    <RectButton onPress={handleToggleFavorite}
+                    style={[styles.favoriteButton, isFavorited ? styles.favorited : {}]}>
+                        {isFavorited ? <Image source={require('../../../assets/images/icons/heart-outline.png')} /> :
+                        <Image source={require('../../../assets/images/icons/unfavorite.png')} />}
+            
+                        
                     </RectButton>
 
                     <RectButton onPress={handleWhatsapp} style={styles.contactButton}>

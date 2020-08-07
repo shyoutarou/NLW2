@@ -4,8 +4,15 @@ import { AppLoading } from 'expo'
 import { Archivo_400Regular, Archivo_700Bold, useFonts } from '@expo-google-fonts/archivo'
 import { Poppins_400Regular, Poppins_600SemiBold } from '@expo-google-fonts/poppins'
 import { RectButton } from 'react-native-gesture-handler'
+import { useNavigation } from '@react-navigation/native'
 
 const Landing = () => {
+
+    const navigation = useNavigation()
+
+    const handleNavigateToGiveClassesPage = () => {
+        navigation.navigate('GiveClasses')
+    }
 
     let [fontsLoaded] = useFonts({
         Archivo_400Regular,
@@ -34,7 +41,7 @@ const Landing = () => {
                     </Text>
                 </RectButton>
 
-                <RectButton style={[styles.button, styles.buttonSecondary]}>
+                <RectButton onPress={handleNavigateToGiveClassesPage} style={[styles.button, styles.buttonSecondary]}>
                     <Image source={require('../../../assets/images/icons/give-classes.png')} />
                     <Text style={styles.buttonText}>
                         Dar aulas

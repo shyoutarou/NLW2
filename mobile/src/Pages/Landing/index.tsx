@@ -14,6 +14,10 @@ const Landing = () => {
         navigation.navigate('GiveClasses')
     }
 
+    const handleNavigateStudyTabsPage = () => {
+        navigation.navigate('StudyTabs')
+    }
+
     let [fontsLoaded] = useFonts({
         Archivo_400Regular,
         Archivo_700Bold,
@@ -34,7 +38,7 @@ const Landing = () => {
             </Text>
 
             <View style={styles.buttonsContainer}>
-                <RectButton style={[styles.button, styles.buttonPrimary]}>
+                <RectButton onPress={handleNavigateStudyTabsPage} style={[styles.button, styles.buttonPrimary]}>
                     <Image source={require('../../../assets/images/icons/study.png')} />
                     <Text style={styles.buttonText}>
                         Estudar

@@ -11,12 +11,7 @@ const Favorites = () => {
                 paddingHorizontal: 16,
                 paddingBottom: 16
             }} style={styles.teacherList} >
-                <TeacherItem />
-                <TeacherItem />
-                <TeacherItem />
-                <TeacherItem />
-                <TeacherItem />
-                <TeacherItem />
+                
             </ScrollView>
         </View>
     )

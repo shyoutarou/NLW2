@@ -1,14 +1,22 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { View, StyleSheet, Image, Text, TouchableOpacity } from 'react-native'
 import { AppLoading } from 'expo'
 import { Archivo_400Regular, Archivo_700Bold, useFonts } from '@expo-google-fonts/archivo'
 import { Poppins_400Regular, Poppins_600SemiBold } from '@expo-google-fonts/poppins'
 import { RectButton } from 'react-native-gesture-handler'
 import { useNavigation } from '@react-navigation/native'
+import api from '../../services/api'
 
 const Landing = () => {
 
     const navigation = useNavigation()
+
+    const [connections, setConnections] = useState(0)
+    useEffect(() => {
+        api.get('/connections').then(resp => {
+            setConnections(resp.data.total)
+        }).catch(err => console.log(err))
+    }, [])
 
     const handleNavigateToGiveClassesPage = () => {
         navigation.navigate('GiveClasses')
@@ -54,7 +62,7 @@ const Landing = () => {
             </View>
 
             <Text style={styles.totalConnections}>
-                Total de 250 conexões já realizdas {' '}
+                Total de {connections} conexões já realizdas {' '}
                 <Image source={require('../../../assets/images/icons/heart.png')} />
             </Text>
         </View>

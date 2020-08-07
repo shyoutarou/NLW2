@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { View, Text, StyleSheet, Image, Linking } from 'react-native'
 import { RectButton } from 'react-native-gesture-handler'
 import AsyncStorage from '@react-native-community/async-storage'
+import api from '../../services/api'
 
 interface Teacher {
     teacher: TeacherProps
@@ -23,6 +24,9 @@ const TeacherItem: React.FC<Teacher> = ({ teacher, favorited }) => {
     const [isFavorited, setIsFavorited] = useState(favorited)
 
     const handleWhatsapp = () => {
+        api.post('/connections', {
+            user_id: teacher.id
+        })
         Linking.openURL(`whatsapp://send?phone=${teacher.whatsapp}`)
     }
 

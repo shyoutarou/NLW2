@@ -2,6 +2,8 @@ import React from 'react'
 import logoImage from '../../assets/images/logo.svg'
 import details from '../../assets/images/details.svg'
 import details2 from '../../assets/images/details2.svg'
+import { FiCheck, FiHeart } from 'react-icons/fi'
+import { FaHeart } from 'react-icons/fa'
 import './styles.css'
 
 const UserForm = () => {
@@ -16,22 +18,26 @@ const UserForm = () => {
             </div>
             <div className="userform-form">
                 <form>
-                    <h3>Fazer login</h3>
-                    <input type="text"/>
-                    <input type="text"/>
-                    <div>
-                        <div>
-                            <input type="checkbox"/>
+                    <h3 className="userform-title">Fazer login</h3>
+                    <div className="userform-inputs">
+                        <input placeholder='Digite seu e-mail' className="userform-email" type="text"/>
+                        <input placeholder='Digite sua senha' className="userform-password" type="text"/>
+                    </div>
+                    <div className="options">
+                        <div className="remember">
+                            <div className="checkbox">
+                                <FiCheck size={16} color='white' />
+                            </div>
                             <p>Lembrar-me</p>
                         </div>
-                        <p>Esqueci minha senha</p>
+                        <p className="forget-password">Esqueci minha senha</p>
                     </div>
-                    <button>Entrar</button>
+                    <button className='form-button'>Entrar</button>
+                    <div className="userform-signup">
+                        <p>Não tem conta? <strong>Cadastre-se</strong></p>
+                        <span>É de graça <FaHeart className='heart-fa' size={16} color='#8257e5' /></span>
+                    </div>
                 </form>
-                <div>
-                    <p>Não tem conta? <strong>Cadastre-se</strong></p>
-                    <p>É de graça s2</p>
-                </div>
             </div>
         </div>
     )

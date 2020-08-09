@@ -13,8 +13,11 @@
 
 .userform-form {
     flex-grow: 1;
-    height: 100%;
-    background-color: var(--color-box-base);
+    min-height: 100vh;
+    background-color: #e5e5e5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .userform-logo {
@@ -35,4 +38,112 @@
     position: absolute;
     padding: 100px;
     width: 100%;
+}
+
+form {
+    width: 352px;
+}
+
+.userform-title {
+    font-size: 36px;
+    font-family: Poppins;
+    color: var(--color-text-title);
+}
+
+.userform-inputs {
+    margin: 50px 0;
+}
+
+.userform-email {
+    width: 352px;
+    height: 72px;
+    border: 1px solid var(--color-text-complement);
+    border-bottom: 0px solid var(--color-text-complement);
+    border-top-right-radius: 8px;
+    border-top-left-radius: 8px;
+    font-weight: lighter;
+    outline: none;
+    padding-left: 20px;
+}
+
+.userform-password {
+    width: 352px;
+    height: 72px;
+    border: 1px solid var(--color-text-complement);
+    border-bottom-right-radius: 8px;
+    border-bottom-left-radius: 8px;
+    font-weight: lighter;
+    outline: none;
+    padding-left: 20px;
+}
+
+.remember {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.remember p {
+    font-weight: lighter;
+    margin-left: 8px;
+}
+
+.remember .checkbox {
+    height: 24px;
+    width: 24px;
+    border-radius: 8px;
+    background-color: var(--color-secundary);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.options {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.options .forget-password {
+    font-weight: lighter;   
+}
+
+.form-button {
+    background-color: var(--color-secundary);
+    border: 0;
+    outline: none;
+    color: white;
+    font-weight: lighter;
+    width: 352px;
+    height: 56px;
+    border-radius: 8px;
+    cursor: pointer;
+    margin: 15px 0;
+}
+
+.userform-signup {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.userform-signup span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.heart-fa {
+    margin-left: 5px;
+}
+
+.userform-signup p {
+    font-weight: lighter;
+}
+
+.userform-signup p strong {
+    font-weight: bold;
+    color: var(--color-primary-dark);
+    text-decoration: underline;
+    cursor: pointer;
 }

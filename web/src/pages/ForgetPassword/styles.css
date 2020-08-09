@@ -1,0 +1,57 @@
+form {
+    width: 352px;
+}
+
+.userform-title {
+    font-size: 36px;
+    font-family: Poppins;
+    color: var(--color-text-title);
+}
+
+.userform-inputs {
+    margin: 50px 0;
+}
+
+.userform-email {
+    width: 352px;
+    height: 72px;
+    border: 1px solid var(--color-text-complement);
+    border-radius: 8px;
+    font-weight: lighter;
+    outline: none;
+    padding-left: 20px;
+}
+
+.form-input {
+    position: relative;
+}
+
+.userform-email:focus + .input-border {
+    display: initial;
+}
+
+.input-border {
+    top: 15px;
+    left: 0;
+    position: absolute;
+    width: 2px;
+    background-color: var(--color-primary-dark);
+    height: 40px;
+    display: none;
+}
+
+.form-button {
+    background-color: var(--color-secundary);
+    border: 0;
+    outline: none;
+    color: white;
+    font-weight: lighter;
+    width: 352px;
+    height: 56px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.goback {
+    cursor: pointer;
+}

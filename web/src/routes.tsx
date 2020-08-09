@@ -5,11 +5,12 @@ import TeacherForm from './pages/TeacherForm'
 import TeacherList from './pages/TeacherList'
 import Login from './pages/Login'
 import Register from './pages/Register'
+import ForgotPassword from './pages/ForgetPassword'
 
 const Routes = () => {
     return (
         <BrowserRouter>
-            <Route component={Register} path='/' exact />
+            <Route component={ForgotPassword} path='/' exact />
             <Route component={TeacherForm} path='/give-classes' exact />
             <Route component={TeacherList} path='/study' exact />
         </BrowserRouter>

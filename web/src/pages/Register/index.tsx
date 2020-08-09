@@ -15,7 +15,8 @@ const Register = () => {
             <div className="goback">
                 <img src={goBack} alt="voltar"/>
             </div>
-                <h3 className="userform-title">Fazer login</h3>
+                <h3 className="userform-title">Cadastro</h3>
+                <p>Preencha os dados abaixo para começar.</p>
                 <div className="userform-inputs">
                     <div className="form-input">
                         <input placeholder='Digite seu nome' className="userform-name" type="text" />

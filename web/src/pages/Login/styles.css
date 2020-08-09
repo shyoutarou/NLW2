@@ -1,0 +1,164 @@
+form {
+    width: 352px;
+}
+
+.userform-title {
+    font-size: 36px;
+    font-family: Poppins;
+    color: var(--color-text-title);
+}
+
+.userform-inputs {
+    margin: 50px 0;
+}
+
+.userform-email {
+    width: 352px;
+    height: 72px;
+    border: 1px solid var(--color-text-complement);
+    border-bottom: 0px solid var(--color-text-complement);
+    border-top-right-radius: 8px;
+    border-top-left-radius: 8px;
+    font-weight: lighter;
+    outline: none;
+    padding-left: 20px;
+}
+
+.form-input {
+    position: relative;
+}
+
+.userform-email:focus + .input-border {
+    display: initial;
+}
+
+.userform-password:focus + .input-border {
+    display: initial;
+}
+
+.input-border {
+    top: 15px;
+    left: 0;
+    position: absolute;
+    width: 2px;
+    background-color: var(--color-primary-dark);
+    height: 40px;
+    display: none;
+}
+
+.userform-password {
+    width: 352px;
+    height: 72px;
+    border: 1px solid var(--color-text-complement);
+    border-bottom-right-radius: 8px;
+    border-bottom-left-radius: 8px;
+    font-weight: lighter;
+    outline: none;
+    padding-left: 20px;
+}
+
+.eye {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    cursor: pointer;
+    background-color: white;
+    padding: 5px;
+    border-radius: 15px;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+}
+
+.remember {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.remember p {
+    font-weight: lighter;
+    margin-left: 8px;
+}
+
+.checkbox-container {
+    position: relative;
+    cursor: pointer;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+}
+
+.checkbox-container input {
+    position: absolute;
+    width: 0;
+    height: 0;
+    cursor: pointer;
+    opacity: 0;
+}
+
+.checkbox-container input:checked ~ .checkbox {
+    background-color: var(--color-secundary);
+}
+
+.checkbox {
+    height: 24px;
+    width: 24px;
+    border-radius: 8px;
+    background-color: var(--color-text-complement);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.options {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.options .forget-password {
+    font-weight: lighter;
+    cursor: pointer;   
+}
+
+.form-button {
+    background-color: var(--color-secundary);
+    border: 0;
+    outline: none;
+    color: white;
+    font-weight: lighter;
+    width: 352px;
+    height: 56px;
+    border-radius: 8px;
+    cursor: pointer;
+    margin: 15px 0;
+}
+
+.userform-signup {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.userform-signup span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.heart-fa {
+    margin-left: 5px;
+}
+
+.userform-signup p {
+    font-weight: lighter;
+}
+
+.userform-signup p strong {
+    font-weight: bold;
+    color: var(--color-primary-dark);
+    text-decoration: underline;
+    cursor: pointer;
+}

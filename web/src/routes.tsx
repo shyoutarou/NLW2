@@ -6,11 +6,14 @@ import TeacherList from './pages/TeacherList'
 import Login from './pages/Login'
 import Register from './pages/Register'
 import ForgotPassword from './pages/ForgetPassword'
+import Success from './components/Success'
+import RegisterSuccess from './pages/RegisterSuccess'
+import ForgotPasswordSuccess from './pages/ForgotPasswordSucces'
 
 const Routes = () => {
     return (
         <BrowserRouter>
-            <Route component={ForgotPassword} path='/' exact />
+            <Route component={ForgotPasswordSuccess} path='/' exact />
             <Route component={TeacherForm} path='/give-classes' exact />
             <Route component={TeacherList} path='/study' exact />
         </BrowserRouter>

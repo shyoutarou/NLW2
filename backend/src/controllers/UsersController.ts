@@ -32,7 +32,7 @@ export default {
 
         delete user[0].password
 
-        const token = jwt.sign(user[0], key, { expiresIn: '86400' })
+        const token = jwt.sign(user[0], key, { expiresIn: 86400 })
 
         return res.status(200).json({ user: user[0], token })
     }

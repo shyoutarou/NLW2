@@ -9,6 +9,8 @@ export async function up(knex: Knex) {
         table.string('bio').notNullable()
         table.string('email').notNullable()
         table.string('password').notNullable()
+        table.timestamp('token_expires')
+        table.string('password_token')
     })
 }
 

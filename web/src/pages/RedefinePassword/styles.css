@@ -1,0 +1,116 @@
+form {
+    width: 352px;
+}
+
+.userform-title {
+    font-size: 36px;
+    font-family: Poppins;
+    color: var(--color-text-title);
+}
+
+.userform-inputs {
+    margin: 50px 0;
+}
+
+.userform-name {
+    width: 352px;
+    height: 72px;
+    border: 1px solid var(--color-text-complement);
+    border-bottom: 0px solid var(--color-text-complement);
+    border-top-right-radius: 8px;
+    border-top-left-radius: 8px;
+    font-weight: lighter;
+    outline: none;
+    padding-left: 20px;
+}
+
+.userform-email {
+    width: 352px;
+    height: 72px;
+    border: 1px solid var(--color-text-complement);
+    border-bottom: 0px solid var(--color-text-complement);
+    font-weight: lighter;
+    outline: none;
+    padding-left: 20px;
+}
+
+.userform-password {
+    width: 352px;
+    height: 72px;
+    border: 1px solid var(--color-text-complement);
+    border-bottom: 0px solid var(--color-text-complement);
+    font-weight: lighter;
+    outline: none;
+    padding-left: 20px;
+}
+
+.form-input {
+    position: relative;
+}
+
+.userform-email:focus + .input-border {
+    display: initial;
+}
+
+.userform-password:focus + .input-border {
+    display: initial;
+}
+
+.userform-name:focus + .input-border {
+    display: initial;
+}
+
+.userform-confirmpassword:focus + .input-border {
+    display: initial;
+}
+
+.input-border {
+    top: 15px;
+    left: 0;
+    position: absolute;
+    width: 2px;
+    background-color: var(--color-primary-dark);
+    height: 40px;
+    display: none;
+}
+
+.userform-confirmpassword {
+    width: 352px;
+    height: 72px;
+    border: 1px solid var(--color-text-complement);
+    border-bottom-right-radius: 8px;
+    border-bottom-left-radius: 8px;
+    font-weight: lighter;
+    outline: none;
+    padding-left: 20px;
+}
+
+.eye {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    cursor: pointer;
+    background-color: white;
+    padding: 5px;
+    border-radius: 15px;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+}
+
+.form-button {
+    background-color: var(--color-secundary);
+    border: 0;
+    outline: none;
+    color: white;
+    font-weight: lighter;
+    width: 352px;
+    height: 56px;
+    border-radius: 8px;
+    cursor: pointer;
+    margin: 15px 0;
+}
+
+.goback {
+    cursor: pointer;
+}

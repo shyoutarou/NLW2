@@ -3,6 +3,7 @@ import bcrypt from 'bcrypt'
 import crypto from 'crypto'
 import jwt from 'jsonwebtoken'
 import db from '../database/connection'
+import nodemailer from 'nodemailer'
 import { key } from '../auth.json'
 
 export default {
@@ -47,6 +48,28 @@ export default {
         }).update({
             token_expires,
             password_token
+        })
+
+        const test = await nodemailer.createTestAccount()
+
+        const transporter = nodemailer.createTransport({
+            host: 'smtp.mailtrap.io',
+            secure: false,
+            port: 587,
+            auth: {
+                user: test.user,
+                pass: test.pass
+            }
+        })
+
+        await transporter.sendMail({
+            from: '"Breno Macêdo" <brenomacedo5432@gmail.com>',
+            to: email,
+            subject: "Proffy - Recuperação de senha.",
+            text: `Olá! Foi solicitada a recuperação de senha da sua conta! Para isso, entre no link abaixo e utilize o token: ${password_token}`,
+            html: `<div style="width: 400px; height: 400px; background-color: purple">
+               ola mundo 
+            </div>`
         })
 
         return res.status(200).send('token sent to your email')

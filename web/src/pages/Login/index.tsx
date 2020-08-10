@@ -1,9 +1,10 @@
-import React, { useState } from 'react'
+import React, { useState, FormEvent } from 'react'
 import UserForm from '../../components/UserForm'
 import { FiCheck, FiEye, FiEyeOff } from 'react-icons/fi'
 import { FaHeart } from 'react-icons/fa'
 import './styles.css'
 import { useHistory } from 'react-router-dom'
+import api from '../../services/api'
 
 const Login = () => {
 
@@ -14,9 +15,28 @@ const Login = () => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
 
+    const handleLogin = async (e: FormEvent) => {
+        e.preventDefault()
+
+        try {
+            const res = await api.post('/profiles', {
+                email, password
+            })
+
+            api.defaults.headers.authorization = res.data.token
+
+            history.push('/profile', {
+                user: res.data.user
+            })
+        } catch(e) {
+            return alert('usuario ou senha inválidos!')
+        }
+
+    }
+
     return (
         <UserForm flexDirection='row'>
-            <form className="userform-mainform">
+            <form onSubmit={handleLogin} className="userform-mainform">
                 <h3 className="userform-title">Fazer login</h3>
                 <div className="userform-inputs">
                     <div className="form-input">

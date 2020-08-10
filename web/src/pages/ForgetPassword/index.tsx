@@ -7,7 +7,7 @@ import './styles.css'
 const ForgotPassword = () => {
     return (
         <UserForm flexDirection="row-reverse">
-            <form>
+            <form className="userform-mainform">
                 <div className="goback">
                     <img src={goBack} alt="voltar"/>
                 </div>
@@ -15,7 +15,7 @@ const ForgotPassword = () => {
                 <p>Não esquenta, vamos dar um jeito nisso.</p>
                 <div className="userform-inputs">
                     <div className="form-input">
-                        <input placeholder='Digite seu e-mail' className="userform-email" type="email" />
+                        <input placeholder='Digite seu e-mail' className="userform-unique" type="email" />
                         <div className="input-border"></div>
                     </div>
                 </div>

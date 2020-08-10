@@ -3,23 +3,30 @@ import UserForm from '../../components/UserForm'
 import { FiCheck, FiEye, FiEyeOff } from 'react-icons/fi'
 import { FaHeart } from 'react-icons/fa'
 import './styles.css'
+import { useHistory } from 'react-router-dom'
 
 const Login = () => {
 
+    const history = useHistory()
+
     const [remember, setRemember] = useState(false)
     const [visible, setVisible] = useState(false)
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
 
     return (
         <UserForm flexDirection='row'>
-            <form>
+            <form className="userform-mainform">
                 <h3 className="userform-title">Fazer login</h3>
                 <div className="userform-inputs">
                     <div className="form-input">
-                        <input placeholder='Digite seu e-mail' className="userform-email" type="text" />
+                        <input value={email} onChange={e => setEmail(e.target.value)}
+                        placeholder='Digite seu e-mail' className="userform-top" type="text" />
                         <div className="input-border"></div>
                     </div>
                     <div className="form-input">
-                        <input placeholder='Digite sua senha' className="userform-password"
+                        <input value={password} onChange={e => setPassword(e.target.value)}
+                        placeholder='Digite sua senha' className="userform-bottom"
                         type={visible ? "text" : "password"}/>
                         <div className="input-border"></div>
                         <div onClick={() => {setVisible(!visible)}} className="eye">
@@ -39,11 +46,11 @@ const Login = () => {
                         </label>
                         <p>Lembrar-me</p>
                     </div>
-                    <p className="forget-password">Esqueci minha senha</p>
+                    <p className="forget-password" onClick={() => history.push('/forgot-password')}>Esqueci minha senha</p>
                 </div>
                 <button className='form-button'>Entrar</button>
                 <div className="userform-signup">
-                    <p>Não tem conta? <strong>Cadastre-se</strong></p>
+                    <p>Não tem conta? <strong onClick={() => history.push('/register')}>Cadastre-se</strong></p>
                     <span>É de graça <FaHeart className='heart-fa' size={16} color='#8257e5' /></span>
                 </div>
             </form>

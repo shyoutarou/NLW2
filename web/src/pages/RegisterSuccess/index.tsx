@@ -3,8 +3,8 @@ import Success from '../../components/Success'
 
 const RegisterSuccess = () => {
     return (
-        <Success button="Acessar lista" description="Tudo certo, seu cadastro está na nossa lista de professores.
-        Agora é só ficar de olho no seu WhatsApp." title="Cadastro salvo!" />
+        <Success button="Fazer login" description="Agora você faz parte da plataforma da Proffy.
+        Tenha uma ótima experiência.." title="Cadastro concluído!" navigate="/" />
     )
 }
 

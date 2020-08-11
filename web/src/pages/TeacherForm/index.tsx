@@ -1,4 +1,4 @@
-import React, { useState, FormEvent } from 'react'
+import React, { useState, FormEvent, useEffect } from 'react'
 import PageHeader from '../../components/PageHeader'
 import Input from '../../components/Input'
 import warningIcon from '../../assets/images/icons/warning.svg'
@@ -6,7 +6,16 @@ import './styles.css'
 import Textarea from '../../components/TextArea'
 import Select from '../../components/Select'
 import api from '../../services/api'
-import { useHistory } from 'react-router-dom'
+import { useHistory, useLocation } from 'react-router-dom'
+
+interface User {
+    id: number
+    name: string
+    avatar: string
+    whatsapp: string
+    bio: string
+    email: string
+}
 
 const TeacherForm = () => {
 
@@ -23,6 +32,24 @@ const TeacherForm = () => {
 
     const [subject, setSubject] = useState('')
     const [cost, setCost] = useState('')
+
+    const [user, setUser] = useState<User>()
+    const params = useLocation<{ user: User }>()
+
+    useEffect(() => {
+        if(!params.state.user) {
+            if(localStorage.getItem('token')) {
+                api.defaults.headers.authorization = `Bearer ${localStorage.getItem('token')}`
+                api.post('/auth').then(res => {
+                    setUser(res.data.user)
+                }).catch(e => history.push('/'))
+            } else {
+                history.push('/')
+            }
+        } else {
+            
+        }
+    }, [])
 
     const [scheduleItems, setScheduleItems] = useState<scheduleItem[]>([
         { week_day: '0', from: '', to: '' },

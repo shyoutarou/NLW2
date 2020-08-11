@@ -17,7 +17,6 @@ const Routes = () => {
         <BrowserRouter>
             <Switch>
                 <Route component={Login} path='/' exact />
-                <Route component={Landing} path='/profile' exact />
                 <Route component={Register} path='/register' exact />
                 <Route component={RegisterSuccess} path='/register-success' exact />
                 <Route component={ForgotPassword} path='/forgot-password' exact />
@@ -26,6 +25,7 @@ const Routes = () => {
                 <Route component={RedefinePasswordSuccess} path='/redefine-password-success' exact />
                 <Route component={TeacherForm} path='/give-classes' exact />
                 <Route component={TeacherList} path='/study' exact />
+                <Route component={Landing} path='/profile' exact />
                 <Redirect from='*' to='/' />
             </Switch>
         </BrowserRouter>

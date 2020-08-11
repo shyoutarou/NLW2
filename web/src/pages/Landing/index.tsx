@@ -4,13 +4,43 @@ import LandingImg from '../../assets/images/landing.svg'
 import StudyIcon from '../../assets/images/icons/study.svg'
 import GiveClasses from '../../assets/images/icons/give-classes.svg'
 import PurpleHeart from '../../assets/images/icons/purple-heart.svg'
-import { Link } from 'react-router-dom'
+import { Link, useHistory, useParams, useLocation } from 'react-router-dom'
 import './styles.css'
 import api from '../../services/api'
 
+
+interface User {
+    id: number
+    name: string
+    avatar: string
+    whatsapp: string
+    bio: string
+    email: string
+}
+
 const Landing = () => {
 
+    const history = useHistory()
+
     const [totalConnections, setTotalConnections] = useState(0)
+
+    const [user, setUser] = useState<User>()
+    const params = useLocation<{ user: User }>()
+
+    useEffect(() => {
+        if(!params.state.user) {
+            if(localStorage.getItem('token')) {
+                api.defaults.headers.authorization = `Bearer ${localStorage.getItem('token')}`
+                api.post('/auth').then(res => {
+                    setUser(res.data.user)
+                }).catch(e => history.push('/'))
+            } else {
+                history.push('/')
+            }
+        } else {
+            
+        }
+    }, [])
 
     useEffect(() => {
         api.get('/connections').then(resp => {

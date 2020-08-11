@@ -1,4 +1,4 @@
-import React, { useState, FormEvent } from 'react'
+import React, { useState, FormEvent, useEffect } from 'react'
 import UserForm from '../../components/UserForm'
 import { FiCheck, FiEye, FiEyeOff } from 'react-icons/fi'
 import { FaHeart } from 'react-icons/fa'
@@ -15,6 +15,21 @@ const Login = () => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
 
+    
+    useEffect(() => {
+        if(localStorage.getItem('token')) {
+            api.defaults.headers.authorization = `Bearer ${localStorage.getItem('token')}`
+            api.post('/auth').then(res => {
+                history.push('/profile', {
+                    user: res.data.user
+                })
+            }).catch(e => history.push('/'))
+        } else {
+            history.push('/')
+        }
+    }, [])
+    
+
     const handleLogin = async (e: FormEvent) => {
         e.preventDefault()
 
@@ -24,6 +39,7 @@ const Login = () => {
             })
 
             api.defaults.headers.authorization = res.data.token
+            localStorage.setItem('token', res.data.token)
 
             history.push('/profile', {
                 user: res.data.user

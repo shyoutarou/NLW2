@@ -1,5 +1,5 @@
-import React, { useState, FormEvent } from 'react'
-import { Link } from 'react-router-dom'
+import React, { useState, FormEvent, useEffect } from 'react'
+import { Link, useLocation, useHistory } from 'react-router-dom'
 import BackIcon from '../../assets/images/icons/back.svg'
 import LogoImg from '../../assets/images/logo.svg'
 import './styles.css'
@@ -10,22 +10,51 @@ import Select from '../../components/Select'
 import Input from '../../components/Input'
 import api from '../../services/api'
 
+interface User {
+    id: number
+    name: string
+    avatar: string
+    whatsapp: string
+    bio: string
+    email: string
+}
+
+interface Teacher {
+    id: number
+    name: string
+    avatar: string
+    whatsapp: string
+    bio: string
+    cost: number
+    subject: string
+}
+
 const TeacherList = () => {
 
-        interface Teacher {
-            id: number
-            name: string
-            avatar: string
-            whatsapp: string
-            bio: string
-            cost: number
-            subject: string
-        }
 
     const [subject, setSubject] = useState('')
     const [weekDay, setWeekDay] = useState('')
     const [time, setTime] = useState('')
     const [teachers, setTeachers] = useState<Teacher[]>([])
+
+    const [user, setUser] = useState<User>()
+    const params = useLocation<{ user: User }>()
+    const history = useHistory()
+
+    useEffect(() => {
+        if(!params.state.user) {
+            if(localStorage.getItem('token')) {
+                api.defaults.headers.authorization = `Bearer ${localStorage.getItem('token')}`
+                api.post('/auth').then(res => {
+                    setUser(res.data.user)
+                }).catch(e => history.push('/'))
+            } else {
+                history.push('/')
+            }
+        } else {
+            
+        }
+    }, [])
 
     const searchTeachers = (e: FormEvent) => {
         e.preventDefault()

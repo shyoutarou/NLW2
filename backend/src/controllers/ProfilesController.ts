@@ -112,5 +112,8 @@ export default {
         })
 
         return res.status(200).send('password updated successfully')
+    },
+    async profileAuth(req: Request, res: Response) {
+        return res.json({ user: req.body.user })
     }
 }

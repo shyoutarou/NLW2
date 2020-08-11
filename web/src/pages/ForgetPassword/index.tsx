@@ -21,7 +21,7 @@ const ForgotPassword = () => {
             return alert('Email inexistente!')
         }
 
-        history.push('/forgot-password/success')
+        history.push('/forgot-password-success')
     }
 
     return (

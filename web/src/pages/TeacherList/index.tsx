@@ -1,5 +1,5 @@
 import React, { useState, FormEvent, useEffect } from 'react'
-import { Link, useLocation, useHistory } from 'react-router-dom'
+import { useLocation, useHistory } from 'react-router-dom'
 import BackIcon from '../../assets/images/icons/back.svg'
 import LogoImg from '../../assets/images/logo.svg'
 import './styles.css'

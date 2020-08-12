@@ -20,7 +20,7 @@ const Login = () => {
         if(localStorage.getItem('token')) {
             api.defaults.headers.authorization = `Bearer ${localStorage.getItem('token')}`
             api.post('/auth').then(res => {
-                history.push('/profile', {
+                history.push('/home', {
                     user: res.data.user
                 })
             }).catch(e => history.push('/'))

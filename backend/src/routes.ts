@@ -19,9 +19,9 @@ routes.get('/connections', ConnectionsController.index)
 routes.post('/users', UsersController.createUser)
 routes.post('/profiles', ProfilesController.loginUser)
 routes.put('/profiles/image/:id', upload.single('avatar'), ProfilesController.updateImage)
-routes.put('/profiles', ProfilesController.updateProfile)
+routes.put('/profilesupdate/:id', ProfilesController.updateProfile)
 routes.post('/profiles/resetpassword', ProfilesController.resetPassword)
 routes.put('/profiles/resetpassword/:id', ProfilesController.updatePassword)
-routes.post('/auth', auth)
+routes.post('/auth', auth, ProfilesController.profileAuth)
 
 export default routes

@@ -25,7 +25,7 @@ export default {
 
         delete user[0].password
 
-        const token = jwt.sign(user[0], key, { expiresIn: 86400 })
+        const token = jwt.sign({ id: user[0].id }, key, { expiresIn: 86400 })
 
         return res.status(200).json({ user: user[0], token })
     },
@@ -116,7 +116,8 @@ export default {
         return res.status(200).send('password updated successfully')
     },
     async profileAuth(req: Request, res: Response) {
-        return res.json({ user: req.body.user })
+        const user = await db('users').where({ id: req.body.userId.id })
+        return res.json(user[0])
     },
     async updateImage(req: Request, res: Response) {
         const { id } = req.params
@@ -138,6 +139,13 @@ export default {
         res.status(200).json({ avatar: req.file.filename })
     },
     async updateProfile(req: Request, res: Response) {
+        const { id } = req.params
+        const { whatsapp, bio, name, cost, subject } = req.body
 
+        await db('users').where({id}).update({
+            whatsapp, cost, name, bio, subject
+        })
+
+        return res.status(201).send('usuario atualizado com sucesso!')
     }
 }

@@ -45,6 +45,7 @@ const Profile = () => {
             api.defaults.headers.authorization = `Bearer ${localStorage.getItem('token')}`
             api.post('/auth').then(res => {
                 setUser(res.data)
+                console.log(res.data)
                 setName(res.data.name)
                 setAvatar(res.data.avatar)
                 setBio(res.data.bio)
@@ -63,20 +64,21 @@ const Profile = () => {
 
     const history = useHistory()
 
-    const handleCreateClass = (e: FormEvent) => {
+    const handleSaveProfile = async (e: FormEvent) => {
         e.preventDefault()
-        api.post('/classes', {
-            name,
-            avatar,
-            whatsapp,
-            bio,
-            subject,
-            cost: Number(cost),
-            schedule: scheduleItems
-        }).then(resp => {
-            alert('cadastro realizado com sucesso')
-            history.push('/')
-        }).catch(err => alert('erro no cadastro'))
+        try {
+            await api.put(`profilesupdate/${user?.id}`, {
+                bio, cost, whatsapp, name, subject
+            })
+
+            setName(name)
+            setWhatsapp(whatsapp)
+            setCost(cost)
+            setBio(bio)
+            setSubject(subject)
+        } catch(e) {
+            alert('erro ao atualizar o seu perfil!')
+        }
     }
 
     const handleDeleteClass = (index: number) => {
@@ -127,13 +129,13 @@ const Profile = () => {
                         }} id="file"
                         type="file" hidden/>
                     </div>
-                    <h3>{user?.name}</h3>
-                    {user?.subject ? <h2>{user.subject}</h2> : false}
+                    <h3>{name}</h3>
+                    {subject ? <h2>{subject}</h2> : false}
                 </div>
             </PageHeader>
 
             <main>
-                <form onSubmit={handleCreateClass}>
+                <form onSubmit={handleSaveProfile}>
                     <fieldset>
                         <legend>Seus dados</legend>
                         <Input name="name" label="Nome" value={name}
@@ -164,8 +166,8 @@ const Profile = () => {
                         
                         {scheduleItems.map((scheduleItem, index) => {
                             return (
-                                <>
-                                    <div key={scheduleItem.week_day} className="schedule-item">
+                                <div key={scheduleItem.week_day}>
+                                    <div className="schedule-item">
                                         <Select value={scheduleItem.week_day}
                                         onChange={e => setScheduleItemValue(index, 'week_day', e.target.value)}
                                         options={[
@@ -187,7 +189,7 @@ const Profile = () => {
                                         <hr></hr>
                                         <h4 onClick={() => handleDeleteClass(index)} className='delete-schedule'>Excluir horário</h4>
                                     </div>
-                                </>
+                                </div>
                             )
                         })}
                     </fieldset>

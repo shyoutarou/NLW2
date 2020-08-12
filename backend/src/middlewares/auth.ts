@@ -18,9 +18,7 @@ export default (req: Request, res: Response, next: NextFunction) => {
             return res.status(400).send('token invalido')
         }
 
-        req.body.user = decoded as any
-        delete req.body.user.iat
-        delete req.body.user.exp
-        return res.json(req.body.user)
+        req.body.userId = decoded as any
+        next()
     })
 }

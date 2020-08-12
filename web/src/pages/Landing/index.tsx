@@ -39,6 +39,7 @@ const Landing = () => {
             api.defaults.headers.authorization = `Bearer ${localStorage.getItem('token')}`
             api.post('/auth').then(res => {
                 setUser(res.data)
+                console.log(res.data.avatar)
             }).catch(e => history.push('/'))
         } else {
             history.push('/')

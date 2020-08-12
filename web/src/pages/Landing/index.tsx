@@ -5,6 +5,7 @@ import StudyIcon from '../../assets/images/icons/study.svg'
 import GiveClasses from '../../assets/images/icons/give-classes.svg'
 import PurpleHeart from '../../assets/images/icons/purple-heart.svg'
 import { Link, useHistory, useParams, useLocation } from 'react-router-dom'
+import { FiLogOut } from 'react-icons/fi'
 import './styles.css'
 import api from '../../services/api'
 
@@ -24,21 +25,23 @@ const Landing = () => {
 
     const [totalConnections, setTotalConnections] = useState(0)
 
-    const [user, setUser] = useState<User>()
-    const params = useLocation<{ user: User }>()
+    const [user, setUser] = useState<User>({
+        avatar: 'default.png',
+        bio: 'loading',
+        email: 'loading',
+        id: 0,
+        name: 'loading',
+        whatsapp: '0000000'
+    })
 
     useEffect(() => {
-        if(!params.state.user) {
-            if(localStorage.getItem('token')) {
-                api.defaults.headers.authorization = `Bearer ${localStorage.getItem('token')}`
-                api.post('/auth').then(res => {
-                    setUser(res.data.user)
-                }).catch(e => history.push('/'))
-            } else {
-                history.push('/')
-            }
+        if(localStorage.getItem('token')) {
+            api.defaults.headers.authorization = `Bearer ${localStorage.getItem('token')}`
+            api.post('/auth').then(res => {
+                setUser(res.data)
+            }).catch(e => history.push('/'))
         } else {
-            
+            history.push('/')
         }
     }, [])
 
@@ -48,9 +51,29 @@ const Landing = () => {
         }).catch(err => {})
     }, [])
 
+    const handleLogout = () => {
+        localStorage.clear()
+        history.push('/')
+    }
+
+    const handleProfile = () => {
+        history.push('/profile', {
+            user
+        })
+    }
+
     return (
         <div id="page-landing">
             <div id="page-landing-content" className='container'>
+                <div className="page-landing-profile">
+                    <div onClick={handleProfile} className="page-landing-profile-info">
+                        <img src={`http://localhost:3333/uploads/${user.avatar}`} alt="user"/>
+                        <h3>{user.name}</h3>
+                    </div>
+                    <div onClick={handleLogout} className="page-landing-logout">
+                        <FiLogOut size={24} color='#D4C2FF' />
+                    </div>
+                </div>
                 <div className="logo-container">
                     <img src={LogoImg} alt="logo"/>
                     <h2>Sua plataforma de estudos online.</h2>

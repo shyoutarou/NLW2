@@ -4,6 +4,8 @@ import crypto from 'crypto'
 import jwt from 'jsonwebtoken'
 import db from '../database/connection'
 import nodemailer from 'nodemailer'
+import fs from 'fs'
+import path from 'path'
 import { key } from '../auth.json'
 
 export default {
@@ -115,5 +117,27 @@ export default {
     },
     async profileAuth(req: Request, res: Response) {
         return res.json({ user: req.body.user })
+    },
+    async updateImage(req: Request, res: Response) {
+        const { id } = req.params
+
+        const user = await db('users').where({id})
+
+        if(!user[0]) {
+            res.status(404).send('user not found')
+        }
+
+        await db('users').where({id}).update({
+            avatar: req.file.filename
+        })
+
+        if(user[0].avatar !== 'default.png') {
+            fs.unlinkSync(path.resolve(__dirname, '..', '..', 'uploads', user[0].avatar))
+        }
+
+        res.status(200).json({ avatar: req.file.filename })
+    },
+    async updateProfile(req: Request, res: Response) {
+
     }
 }

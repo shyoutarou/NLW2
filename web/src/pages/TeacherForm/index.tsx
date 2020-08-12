@@ -35,20 +35,15 @@ const TeacherForm = () => {
     const [cost, setCost] = useState('')
 
     const [user, setUser] = useState<User>()
-    const params = useLocation<{ user: User }>()
 
     useEffect(() => {
-        if(!params.state) {
-            if(localStorage.getItem('token')) {
-                api.defaults.headers.authorization = `Bearer ${localStorage.getItem('token')}`
-                api.post('/auth').then(res => {
-                    setUser(res.data.user)
-                }).catch(e => history.push('/'))
-            } else {
-                history.push('/')
-            }
+        if(localStorage.getItem('token')) {
+            api.defaults.headers.authorization = `Bearer ${localStorage.getItem('token')}`
+            api.post('/auth').then(res => {
+                setUser(res.data.user)
+            }).catch(e => history.push('/'))
         } else {
-            
+            history.push('/')
         }
     }, [])
 

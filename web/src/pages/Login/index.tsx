@@ -41,7 +41,7 @@ const Login = () => {
             api.defaults.headers.authorization = res.data.token
             localStorage.setItem('token', res.data.token)
 
-            history.push('/profile', {
+            history.push('/home', {
                 user: res.data.user
             })
         } catch(e) {

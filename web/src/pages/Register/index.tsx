@@ -33,13 +33,14 @@ const Register = () => {
                 name, email, password,
                 whatsapp: '',
                 bio: '',
-                avatar: 'default.png'
+                avatar: 'default.png',
+                subject: ''
             })
         } catch(e) {
             return alert('Erro ao cadastrar, tente novamente mais tarde!')
         }
 
-        history.push('/register/success')
+        history.push('/register-success')
     }
 
     return (

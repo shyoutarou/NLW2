@@ -84,14 +84,47 @@
     margin-left: 0.8rem;
 }
 
+.page-landing-profile {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 0;
+}
+
+.page-landing-profile-info {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.page-landing-profile-info img {
+    width: 40px;
+    height: 40px;
+    border-radius: 40px;
+}
+
+.page-landing-profile-info h3 {
+    color: #D4C2FF;
+    font-size: 14px;
+    margin-left: 10px;
+}
+
+.page-landing-logout {
+    cursor: pointer;
+}
+
 @media (min-width: 1100px) {
     #page-landing-content {
         max-width: 1100px;
 
         display: grid;
-        grid-template-rows: 350px 1fr;
+        grid-template-rows: 80px 350px 1fr;
         grid-template-columns: 2fr 1fr 1fr;
-        grid-template-areas: "logo hero hero" "buttons buttons total";
+        grid-template-areas:"prof prof prof" "logo hero hero" "buttons buttons total";
+    }
+
+    .page-landing-profile {
+        grid-area: prof;
     }
 
     .logo-container {

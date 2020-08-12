@@ -16,6 +16,8 @@ interface User {
     whatsapp: string
     bio: string
     email: string
+    subject: string
+    cost: string
 }
 
 const Profile = () => {
@@ -26,6 +28,8 @@ const Profile = () => {
         to: string
     }
 
+    const [image, setImage] = useState<File>()
+
     const [name, setName] = useState('')
     const [avatar, setAvatar] = useState('')
     const [bio, setBio] = useState('')
@@ -35,20 +39,21 @@ const Profile = () => {
     const [cost, setCost] = useState('')
 
     const [user, setUser] = useState<User>()
-    const params = useLocation<{ user: User }>()
 
     useEffect(() => {
-        if(!params.state) {
-            if(localStorage.getItem('token')) {
-                api.defaults.headers.authorization = `Bearer ${localStorage.getItem('token')}`
-                api.post('/auth').then(res => {
-                    setUser(res.data.user)
-                }).catch(e => history.push('/'))
-            } else {
-                history.push('/')
-            }
+        if(localStorage.getItem('token')) {
+            api.defaults.headers.authorization = `Bearer ${localStorage.getItem('token')}`
+            api.post('/auth').then(res => {
+                setUser(res.data)
+                setName(res.data.name)
+                setAvatar(res.data.avatar)
+                setBio(res.data.bio)
+                setWhatsapp(res.data.whatsapp)
+                setSubject(res.data.subject)
+                setCost(res.data.cost)
+            }).catch(e => history.push('/'))
         } else {
-            
+            history.push('/')
         }
     }, [])
 
@@ -57,10 +62,6 @@ const Profile = () => {
     ])
 
     const history = useHistory()
-
-    const addNewScheduleItem = () => {
-        setScheduleItems([...scheduleItems, { week_day: '0', from: '', to: '' }])
-    }
 
     const handleCreateClass = (e: FormEvent) => {
         e.preventDefault()
@@ -98,18 +99,36 @@ const Profile = () => {
         setScheduleItems(newArray)
     }
 
+    const handleImageUpdate = async (file: File) => {
+        const formData = new FormData()
+        formData.append('avatar', file)
+
+        try {
+            const resp = await api.put(`/profiles/image/${user?.id}`, formData)
+            setAvatar(resp.data.avatar)
+        } catch(e) {
+            alert('erro ao atualizar sua imagem, tente novamente mais tarde!')
+        }
+    }
+
     return (
         <div id='page-profile' className='container'>
             <PageHeader title='' description="">
                 <div className="profile-main-info">
                     <div className="profile-image">
-                        <img src="https://avatars2.githubusercontent.com/u/55261375?s=460&u=3c70552607a82dead0634c03ecf089e1616f2fa1&v=4" alt="user" className="profile-image-picture"/>
-                        <div className="change-image">
+                        <img src={`http://localhost:3333/uploads/${avatar}`} alt="user" className="profile-image-picture"/>
+                        <label htmlFor="file" className="change-image">
                             <FiCamera size={24} color='white' />
-                        </div>
+                        </label>
+                        <input onChange={e => {
+                            if(e.target.files) {
+                                handleImageUpdate(e.target.files[0])
+                            }
+                        }} id="file"
+                        type="file" hidden/>
                     </div>
-                    <h3>Nome</h3>
-                    <h2>Matéria</h2>
+                    <h3>{user?.name}</h3>
+                    {user?.subject ? <h2>{user.subject}</h2> : false}
                 </div>
             </PageHeader>
 
@@ -141,7 +160,6 @@ const Profile = () => {
                     <fieldset>
                         <legend>
                             Horários disponíveis
-                            <button type='button' onClick={addNewScheduleItem}>+ Novo horário</button>
                         </legend>
                         
                         {scheduleItems.map((scheduleItem, index) => {

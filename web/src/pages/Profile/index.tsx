@@ -22,13 +22,12 @@ interface User {
 
 const Profile = () => {
 
-    interface scheduleItem {
-        week_day: string
-        from: string
-        to: string
+    interface IClasses {
+        class_id: number
+        week_day: number
+        from: number
+        to: number
     }
-
-    const [image, setImage] = useState<File>()
 
     const [name, setName] = useState('')
     const [avatar, setAvatar] = useState('')
@@ -40,27 +39,28 @@ const Profile = () => {
 
     const [user, setUser] = useState<User>()
 
+    const [classes, setClasses] = useState<IClasses[]>([])
+
     useEffect(() => {
         if(localStorage.getItem('token')) {
             api.defaults.headers.authorization = `Bearer ${localStorage.getItem('token')}`
             api.post('/auth').then(res => {
                 setUser(res.data)
-                console.log(res.data)
                 setName(res.data.name)
                 setAvatar(res.data.avatar)
                 setBio(res.data.bio)
                 setWhatsapp(res.data.whatsapp)
                 setSubject(res.data.subject)
                 setCost(res.data.cost)
+                api.get(`/classes/${res.data.id}`).then(resp => {
+                    setClasses(resp.data)
+                    console.log(resp.data)
+                }).catch(e => {})
             }).catch(e => history.push('/'))
         } else {
             history.push('/')
         }
     }, [])
-
-    const [scheduleItems, setScheduleItems] = useState<scheduleItem[]>([
-        { week_day: '0', from: '', to: '' },
-    ])
 
     const history = useHistory()
 
@@ -81,24 +81,24 @@ const Profile = () => {
         }
     }
 
-    const handleDeleteClass = (index: number) => {
-        const newArray = scheduleItems.filter((scheduleItem, scheduleIndex) => {
+    const numberToTime = (number: number) => {
+        const first = Math.floor(number / 60)
+        const firstString = String(first)
+        const firstStringFinal = firstString.length === 1 ? `0${firstString}` : firstString
+
+        const second = Math.floor(number % 60)
+        const secondString = String(second)
+        const secondStringFinal = secondString.length === 1 ? `0${secondString}` : secondString
+
+        return `${firstStringFinal}:${secondStringFinal}`
+    }
+
+    const handleDeleteClass = (index: number, class_id: number) => {
+        const newArray = classes.filter((scheduleItem, scheduleIndex) => {
             return index !== scheduleIndex
         })
 
-        setScheduleItems(newArray)
-    }
-
-    const setScheduleItemValue = (position: number, field: string, value: string) => {
-        const newArray = scheduleItems.map((scheduleItem, index) => {
-            if(index === position) {
-                return {...scheduleItem, [field]: value}
-            }
-
-            return scheduleItem
-        })
-
-        setScheduleItems(newArray)
+        setClasses(newArray)
     }
 
     const handleImageUpdate = async (file: File) => {
@@ -110,6 +110,25 @@ const Profile = () => {
             setAvatar(resp.data.avatar)
         } catch(e) {
             alert('erro ao atualizar sua imagem, tente novamente mais tarde!')
+        }
+    }
+
+    const numberToDay = (number: number) => {
+        switch(number){
+            case 0:
+                return 'Segunda-Feira';
+            case 1:
+                return 'Terça-Feira';
+            case 2:
+                return 'Quarta-Feira';
+            case 3:
+                return 'Quinta-Feira';
+            case 4:
+                return 'Sexta-Feira';
+            case 5:
+                return 'Sábado';
+            case 6:
+                return 'Domingo';
         }
     }
 
@@ -164,30 +183,21 @@ const Profile = () => {
                             Horários disponíveis
                         </legend>
                         
-                        {scheduleItems.map((scheduleItem, index) => {
+                        {classes.map((scheduleItem, index) => {
                             return (
-                                <div key={scheduleItem.week_day}>
+                                <div key={index}>
                                     <div className="schedule-item">
-                                        <Select value={scheduleItem.week_day}
-                                        onChange={e => setScheduleItemValue(index, 'week_day', e.target.value)}
-                                        options={[
-                                            { value: '0', label: 'Segunda' },
-                                            { value: '1', label: 'Terça' },
-                                            { value: '2', label: 'Quarta' },
-                                            { value: '3', label: 'Quinta' },
-                                            { value: '4', label: 'Sexta' },
-                                            { value: '5', label: 'Sábado' },
-                                            { value: '6', label: 'Domingo' },
-                                        ]} name="week_day" label="Dia da semana" />
-                                        <Input name='from' label='das' type='time' value={scheduleItem.from}
-                                        onChange={e => setScheduleItemValue(index, 'from', e.target.value)}/>
-                                        <Input name='to' label='até' type='time' value={scheduleItem.to}
-                                        onChange={e => setScheduleItemValue(index, 'to', e.target.value)}/>
+                                        <Input name='subject' label='Matéria' type='text' value={numberToDay(scheduleItem.week_day)}
+                                        readOnly />
+                                        <Input name='from' label='das' type='time' value={numberToTime(scheduleItem.from)}
+                                        readOnly />
+                                        <Input name='to' label='até' type='time' value={numberToTime(scheduleItem.to)}
+                                        readOnly />
                                         
                                     </div>
                                     <div className="delete-schedule">
                                         <hr></hr>
-                                        <h4 onClick={() => handleDeleteClass(index)} className='delete-schedule'>Excluir horário</h4>
+                                        <h4 onClick={() => handleDeleteClass(index, scheduleItem.class_id)} className='delete-schedule'>Excluir horário</h4>
                                     </div>
                                 </div>
                             )

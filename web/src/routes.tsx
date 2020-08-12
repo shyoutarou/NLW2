@@ -11,6 +11,7 @@ import ForgotPasswordSuccess from './pages/ForgotPasswordSucces'
 import RedefinePassword from './pages/RedefinePassword'
 import RedefinePasswordSuccess from './pages/RedefinePasswordSuccess'
 import Profile from './pages/Profile'
+import RegisterClassSuccess from './pages/RegisterClassSuccess'
 
 const Routes = () => {
 
@@ -23,6 +24,7 @@ const Routes = () => {
                 <Route component={RegisterSuccess} path='/register-success' exact />
                 <Route component={ForgotPassword} path='/forgot-password' exact />
                 <Route component={ForgotPasswordSuccess} path='/forgot-password-success' exact />
+                <Route component={RegisterClassSuccess} path='/register-class-success' exact />
                 <Route component={RedefinePassword} path='/redefine-password/:id/:token' exact />
                 <Route component={RedefinePasswordSuccess} path='/redefine-password-success' exact />
                 <Route component={TeacherForm} path='/give-classes' exact />

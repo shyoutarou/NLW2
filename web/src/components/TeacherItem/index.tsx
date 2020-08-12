@@ -26,7 +26,7 @@ const TeacherItem: React.FC<TeacherItem> = ({ teacher }) => {
     return (
         <article className="teacher-item">
                     <header>
-                        <img src={teacher.avatar} alt="user"/>
+                        <img src={`http://localhost:3333/uploads/${teacher.avatar}`} alt="user"/>
                         <div>
                             <strong>{teacher.name}</strong>
                             <span>{teacher.subject}</span>

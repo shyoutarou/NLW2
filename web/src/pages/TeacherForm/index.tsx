@@ -7,7 +7,7 @@ import Textarea from '../../components/TextArea'
 import Select from '../../components/Select'
 import api from '../../services/api'
 import rocket from '../../assets/images/icons/rocket.svg'
-import { useHistory, useLocation } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 
 interface User {
     id: number
@@ -16,6 +16,8 @@ interface User {
     whatsapp: string
     bio: string
     email: string
+    subject: string
+    cost: number
 }
 
 const TeacherForm = () => {
@@ -26,21 +28,13 @@ const TeacherForm = () => {
         to: string
     }
 
-    const [name, setName] = useState('')
-    const [avatar, setAvatar] = useState('')
-    const [bio, setBio] = useState('')
-    const [whatsapp, setWhatsapp] = useState('')
-
-    const [subject, setSubject] = useState('')
-    const [cost, setCost] = useState('')
-
     const [user, setUser] = useState<User>()
 
     useEffect(() => {
         if(localStorage.getItem('token')) {
             api.defaults.headers.authorization = `Bearer ${localStorage.getItem('token')}`
             api.post('/auth').then(res => {
-                setUser(res.data.user)
+                setUser(res.data)
             }).catch(e => history.push('/'))
         } else {
             history.push('/')
@@ -59,17 +53,13 @@ const TeacherForm = () => {
 
     const handleCreateClass = (e: FormEvent) => {
         e.preventDefault()
-        api.post('/classes', {
-            name,
-            avatar,
-            whatsapp,
-            bio,
-            subject,
-            cost: Number(cost),
+        api.post(`/classes/${user?.id}`, {
+            subject: user?.subject,
+            cost: Number(user?.cost),
             schedule: scheduleItems
         }).then(resp => {
             alert('cadastro realizado com sucesso')
-            history.push('/')
+            history.push('/register-class-success')
         }).catch(err => alert('erro no cadastro'))
     }
 
@@ -103,17 +93,17 @@ const TeacherForm = () => {
                         <div className="page-teacher-info">
                             <div className="page-teacher-info-user">
                                 <img src="https://avatars2.githubusercontent.com/u/55261375?s=460&u=3c70552607a82dead0634c03ecf089e1616f2fa1&v=4" alt="user" className="page-teacher-profile"/>
-                                <h3>Breno Macêdo</h3>
+                                <h3>{user?.name}</h3>
                             </div>
-                            <Input name="whatsapp" readOnly label="Whatsapp" value={whatsapp} />
+                            <Input name="whatsapp" readOnly label="Whatsapp" value={user?.whatsapp} />
                         </div>
-                        <Textarea name='bio' readOnly label='Biografia' value={bio} />
+                        <Textarea name='bio' readOnly label='Biografia' value={user?.bio} />
                     </fieldset>
 
                     <fieldset>
                         <legend>Sobre a aula</legend>
-                        <Input value='Matemática' readOnly name="subject" label="Matéria" />
-                        <Input value='R$ 150' readOnly
+                        <Input value={user?.subject} readOnly name="subject" label="Matéria" />
+                        <Input value={`R$ ${user?.cost}`} readOnly
                         name="cost" label="Custo da sua hora por aula" />
                     </fieldset>
 

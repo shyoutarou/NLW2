@@ -100,7 +100,9 @@ const TeacherList = () => {
             </PageHeader>
 
             <main>
-                {teachers.map(teacher => {
+                {teachers.length === 0 ? <div className="no-results">
+                    <h2>Nenhum professor encontrado com sua pesquisa</h2>
+                </div> : teachers.map(teacher => {
                     return (
                         <TeacherItem key={teacher.id} teacher={teacher}/>
                     )

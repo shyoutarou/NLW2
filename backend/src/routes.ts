@@ -12,8 +12,10 @@ const routes = Router()
 const upload = multer(multerConfig)
 
 
-routes.post('/classes', ClassesController.create)
+routes.post('/classes/:id', ClassesController.create)
 routes.get('/classes', ClassesController.index)
+routes.get('/classes/:id', ClassesController.userClasses)
+routes.delete('/classes/:id', ClassesController.deleteClass)
 routes.post('/connections', ConnectionsController.create)
 routes.get('/connections', ConnectionsController.index)
 routes.post('/users', UsersController.createUser)

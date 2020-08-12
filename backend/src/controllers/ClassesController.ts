@@ -10,24 +10,17 @@ interface ScheduleItem {
 
 export default {
     async create(req: Request, res: Response) {
-        const { name, avatar, whatsapp, bio, subject, cost, schedule } = req.body
+        const { subject, cost, schedule } = req.body
     
         const trx = await db.transaction()
         
         try {
-            const insertedUsersIds = await trx('users').insert({
-                name,
-                avatar,
-                whatsapp,
-                bio
-            })
-        
-            const user_id = insertedUsersIds[0]
+            const { id } = req.params
         
             const insertedClassesIds = await trx('classes').insert({
                 subject,
                 cost,
-                user_id
+                user_id: id
             })
         
             const class_id = insertedClassesIds[0]
@@ -45,7 +38,7 @@ export default {
         
             await trx.commit()
         
-            return res.status(201).send()
+            return res.status(201).send('classe cadastrada')
         } catch(err) {
             await trx.rollback()
             return res.status(400).json({error: "unexpected error"})
@@ -80,5 +73,18 @@ export default {
         .select(['classes.*', 'users.*'])
 
         return res.json(classes)
+    },
+    async userClasses(req: Request, res: Response) {
+        const { id } = req.params
+
+        const classes = await db('classes').where({ user_id: id })
+        .join('class_schedule', 'classes.id', '=', 'class_schedule.class_id')
+
+        res.status(200).json(classes)
+    },
+    async deleteClass(req: Request, res: Response) {
+        const { id } = req.params
+        await db('classes').where({id}).delete()
+        res.status(200).send('classe deletada com sucesso')
     }
 }

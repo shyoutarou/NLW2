@@ -17,7 +17,8 @@ const Routes = () => {
     return (
         <BrowserRouter>
             <Switch>
-                <Route component={Profile} path='/' exact />
+                <Route component={Login} path='/' exact />
+                <Route component={Profile} path='/profile' exact />
                 <Route component={Register} path='/register' exact />
                 <Route component={RegisterSuccess} path='/register-success' exact />
                 <Route component={ForgotPassword} path='/forgot-password' exact />

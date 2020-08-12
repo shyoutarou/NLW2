@@ -6,6 +6,7 @@ import './styles.css'
 import Textarea from '../../components/TextArea'
 import Select from '../../components/Select'
 import api from '../../services/api'
+import rocket from '../../assets/images/icons/rocket.svg'
 import { useHistory, useLocation } from 'react-router-dom'
 
 interface User {
@@ -93,32 +94,31 @@ const TeacherForm = () => {
         <div id='page-teacher-form' className='container'>
             <PageHeader title='Que incrível que você quer dar aulas.'
                 description="O primeiro passo é preencher este formulário de inscrição."
-            />
+            >
+                <div className="message-header">
+                    <img src={rocket} alt="rocket"/>
+                    <h4>Prepare-se! Vai ser o máximo</h4>
+                </div>
+            </PageHeader>
 
             <main>
                 <form onSubmit={handleCreateClass}>
                     <fieldset>
                         <legend>Seus dados</legend>
-                        <Input name="name" label="Nome completo" value={name}
-                        onChange={e => setName(e.target.value)} />
-                        <Input name="avatar" label="Avatar" value={avatar}
-                        onChange={e => setAvatar(e.target.value)} />
-                        <Input name="whatsapp" label="Whatsapp" value={whatsapp}
-                        onChange={e => setWhatsapp(e.target.value)} />
-                        <Textarea name='bio' label='Biografia' value={bio}
-                        onChange={e => setBio(e.target.value)} />
+                        <div className="page-teacher-info">
+                            <div className="page-teacher-info-user">
+                                <img src="https://avatars2.githubusercontent.com/u/55261375?s=460&u=3c70552607a82dead0634c03ecf089e1616f2fa1&v=4" alt="user" className="page-teacher-profile"/>
+                                <h3>Breno Macêdo</h3>
+                            </div>
+                            <Input name="whatsapp" readOnly label="Whatsapp" value={whatsapp} />
+                        </div>
+                        <Textarea name='bio' readOnly label='Biografia' value={bio} />
                     </fieldset>
 
                     <fieldset>
                         <legend>Sobre a aula</legend>
-                        <Select value={subject} onChange={e => setSubject(e.target.value)} options={[
-                            { value: 'Artes', label: 'Artes' },
-                            { value: 'Biologia', label: 'Biologia' },
-                            { value: 'Física', label: 'Física' },
-                            { value: 'Matemática', label: 'Matemática' },
-                            { value: 'Química', label: 'Química' }
-                        ]} name="subject" label="Matéria" />
-                        <Input value={cost} onChange={e => setCost(e.target.value)}
+                        <Input value='Matemática' readOnly name="subject" label="Matéria" />
+                        <Input value='R$ 150' readOnly
                         name="cost" label="Custo da sua hora por aula" />
                     </fieldset>
 

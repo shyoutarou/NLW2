@@ -9,6 +9,7 @@ import TeacherItem from '../../components/TeacherItem'
 import Select from '../../components/Select'
 import Input from '../../components/Input'
 import api from '../../services/api'
+import smile from '../../assets/images/icons/smile.svg'
 
 interface User {
     id: number
@@ -42,7 +43,7 @@ const TeacherList = () => {
     const history = useHistory()
 
     useEffect(() => {
-        if(!params.state.user) {
+        if(!params.state) {
             if(localStorage.getItem('token')) {
                 api.defaults.headers.authorization = `Bearer ${localStorage.getItem('token')}`
                 api.post('/auth').then(res => {
@@ -74,6 +75,10 @@ const TeacherList = () => {
     return (
         <div id='page-teacher-list' className='container'>
             <PageHeader title="Estes são os proffys disponíveis.">
+                <div className="message-header-list">
+                    <img src={smile} alt="rocket"/>
+                    <h4>Prepare-se! Vai ser o máximo</h4>
+                </div>
                 <form onSubmit={searchTeachers} id="search-teachers">
                     <Select value={subject} onChange={e => setSubject(e.target.value)}
                     options={[

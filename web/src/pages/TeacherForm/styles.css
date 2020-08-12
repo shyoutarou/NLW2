@@ -97,6 +97,40 @@
     background-color: var(--color-secundary-dark);
 }
 
+.page-teacher-info-user {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.page-teacher-info-user img {
+    width: 80px;
+    height: 80px;
+    border-radius: 40px;
+    margin-right: 20px;
+}
+
+.page-teacher-info-user h3 {
+    color: #32264D;
+}
+
+.message-header {
+    display: flex;
+    align-items: center;
+    position: absolute;
+    right: 0;
+    bottom: 15px;
+}
+
+.message-header h4 {
+    color: #D4C2FF;
+    font-size: 12px;
+    font-family: Poppins;
+    width: 105px;
+    margin-left: 8px;
+}
+
 @media (min-width: 700px) {
     #page-teacher-form {
         max-width: 100vw;
@@ -134,5 +168,21 @@
     #page-teacher-form main footer button {
         width: 20rem;
         margin-top: 0;
+    }
+
+    .page-teacher-info {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 20px;
+    }
+
+    .page-teacher-info-user {
+        display: flex;
+        align-items: center;
+    }
+
+    .message-header {
+        bottom: initial;
     }
 }

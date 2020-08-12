@@ -37,20 +37,20 @@ const Profile = () => {
     const [user, setUser] = useState<User>()
     const params = useLocation<{ user: User }>()
 
-    // useEffect(() => {
-    //     if(!params.state) {
-    //         if(localStorage.getItem('token')) {
-    //             api.defaults.headers.authorization = `Bearer ${localStorage.getItem('token')}`
-    //             api.post('/auth').then(res => {
-    //                 setUser(res.data.user)
-    //             }).catch(e => history.push('/'))
-    //         } else {
-    //             history.push('/')
-    //         }
-    //     } else {
+    useEffect(() => {
+        if(!params.state) {
+            if(localStorage.getItem('token')) {
+                api.defaults.headers.authorization = `Bearer ${localStorage.getItem('token')}`
+                api.post('/auth').then(res => {
+                    setUser(res.data.user)
+                }).catch(e => history.push('/'))
+            } else {
+                history.push('/')
+            }
+        } else {
             
-    //     }
-    // }, [])
+        }
+    }, [])
 
     const [scheduleItems, setScheduleItems] = useState<scheduleItem[]>([
         { week_day: '0', from: '', to: '' },
@@ -63,19 +63,19 @@ const Profile = () => {
     }
 
     const handleCreateClass = (e: FormEvent) => {
-        // e.preventDefault()
-        // api.post('/classes', {
-        //     name,
-        //     avatar,
-        //     whatsapp,
-        //     bio,
-        //     subject,
-        //     cost: Number(cost),
-        //     schedule: scheduleItems
-        // }).then(resp => {
-        //     alert('cadastro realizado com sucesso')
-        //     history.push('/')
-        // }).catch(err => alert('erro no cadastro'))
+        e.preventDefault()
+        api.post('/classes', {
+            name,
+            avatar,
+            whatsapp,
+            bio,
+            subject,
+            cost: Number(cost),
+            schedule: scheduleItems
+        }).then(resp => {
+            alert('cadastro realizado com sucesso')
+            history.push('/')
+        }).catch(err => alert('erro no cadastro'))
     }
 
     const handleDeleteClass = (index: number) => {

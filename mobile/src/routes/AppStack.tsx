@@ -11,6 +11,8 @@ import Onboarding from '../Pages/Onboarding'
 import AsyncStorage from '@react-native-community/async-storage'
 import { Archivo_400Regular, Archivo_700Bold, useFonts } from '@expo-google-fonts/archivo'
 import { Poppins_400Regular, Poppins_600SemiBold } from '@expo-google-fonts/poppins'
+import Register from '../Pages/Register'
+import Register2 from '../Pages/Register2'
 
 YellowBox.ignoreWarnings(['Looks like'])
 const { Navigator, Screen } = createStackNavigator()
@@ -44,7 +46,7 @@ const AppStack = () => {
 
     return (
         <NavigationContainer>
-            <Navigator initialRouteName={/*firstTime === 'true' ? 'StudyBoard' : 'Landing'*/'Login'} headerMode='none'>
+            <Navigator initialRouteName={/*firstTime === 'true' ? 'StudyBoard' : 'Landing'*/'Register2'} headerMode='none'>
                 <Screen name='StudyBoard' component={() => <Onboarding number='01.' boardType='study'
                 description='Encontre vários professores para ensinar você.' />} />
                 <Screen name='GiveClassBoard' component={() => <Onboarding number='02.' boardType='give-class'
@@ -53,6 +55,8 @@ const AppStack = () => {
                 <Screen name='GiveClasses' component={GiveClasses} />
                 <Screen name='StudyTabs' component={StudyTabs} />
                 <Screen name='Login' component={Login} />
+                <Screen name='Register' component={Register} />
+                <Screen name='Register2' component={Register2} />
             </Navigator>
         </NavigationContainer>
     )

@@ -2,8 +2,11 @@ import React, { useState } from 'react'
 import { View, Text, StyleSheet, Image, ImageBackground } from 'react-native'
 import { TextInput, TouchableOpacity, RectButton } from 'react-native-gesture-handler'
 import { Feather } from '@expo/vector-icons'
+import { useNavigation } from '@react-navigation/native'
 
 const Login = () => {
+
+    const navigation = useNavigation()
 
     const [emailFocus, setEmailFocus] = useState(false)
     const [passwordFocus, setPasswordFocus] = useState(false)
@@ -23,7 +26,7 @@ const Login = () => {
             <View style={styles.formContainer}>
                 <View style={styles.topBar}>
                     <Text style={styles.formTitle}>Fazer Login</Text>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={() => navigation.navigate('Register')}>
                         <Text style={styles.createAccount}>Criar um conta</Text>
                     </TouchableOpacity>
                 </View>

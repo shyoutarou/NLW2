@@ -70,6 +70,7 @@ export default {
         })
         .where('classes.subject', '=', subject)
         .join('users', 'classes.user_id', '=', 'users.id')
+        .join('class_schedule', 'classes.id', '=', 'class_schedule.class_id')
         .select(['classes.*', 'users.*'])
 
         return res.json(classes)

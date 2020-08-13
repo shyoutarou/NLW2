@@ -6,6 +6,7 @@ import { createStackNavigator } from '@react-navigation/stack'
 import Landing from '../Pages/Landing'
 import GiveClasses from '../Pages/GiveClasses'
 import StudyTabs from './StudyTabs'
+import Login from '../Pages/Login'
 import Onboarding from '../Pages/Onboarding'
 import AsyncStorage from '@react-native-community/async-storage'
 import { Archivo_400Regular, Archivo_700Bold, useFonts } from '@expo-google-fonts/archivo'
@@ -17,6 +18,14 @@ const { Navigator, Screen } = createStackNavigator()
 
 const AppStack = () => {
     
+    useEffect(() => {
+        AsyncStorage.getItem('firstTime').then(resp => {
+            if(resp) {
+                setFirstTime(resp)
+            }
+        }).catch(err => {})
+    
+    }, [])
 
     const [firstTime, setFirstTime] = useState('true')
 
@@ -27,22 +36,15 @@ const AppStack = () => {
         Poppins_600SemiBold
     })
     
-    useEffect(() => {
-        AsyncStorage.getItem('firstTime').then(resp => {
-            if(resp) {
-                setFirstTime(resp)
-            }
-        }).catch(err => {})
-
-    }, [])
-
     if(!fontsLoaded) {
         return <AppLoading />
     }
+    
+
 
     return (
         <NavigationContainer>
-            <Navigator initialRouteName={firstTime === 'true' ? 'StudyBoard' : 'Landing'} headerMode='none'>
+            <Navigator initialRouteName={/*firstTime === 'true' ? 'StudyBoard' : 'Landing'*/'Login'} headerMode='none'>
                 <Screen name='StudyBoard' component={() => <Onboarding number='01.' boardType='study'
                 description='Encontre vários professores para ensinar você.' />} />
                 <Screen name='GiveClassBoard' component={() => <Onboarding number='02.' boardType='give-class'
@@ -50,6 +52,7 @@ const AppStack = () => {
                 <Screen name='Landing' component={Landing} />
                 <Screen name='GiveClasses' component={GiveClasses} />
                 <Screen name='StudyTabs' component={StudyTabs} />
+                <Screen name='Login' component={Login} />
             </Navigator>
         </NavigationContainer>
     )

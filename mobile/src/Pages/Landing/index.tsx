@@ -6,6 +6,7 @@ import { Poppins_400Regular, Poppins_600SemiBold } from '@expo-google-fonts/popp
 import { RectButton } from 'react-native-gesture-handler'
 import { useNavigation } from '@react-navigation/native'
 import api from '../../services/api'
+import AsyncStorage from '@react-native-community/async-storage'
 
 const Landing = () => {
 

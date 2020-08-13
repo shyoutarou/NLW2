@@ -13,6 +13,7 @@ import { Archivo_400Regular, Archivo_700Bold, useFonts } from '@expo-google-font
 import { Poppins_400Regular, Poppins_600SemiBold } from '@expo-google-fonts/poppins'
 import Register from '../Pages/Register'
 import Register2 from '../Pages/Register2'
+import Success from '../Pages/Success'
 
 YellowBox.ignoreWarnings(['Looks like'])
 const { Navigator, Screen } = createStackNavigator()
@@ -46,7 +47,7 @@ const AppStack = () => {
 
     return (
         <NavigationContainer>
-            <Navigator initialRouteName={/*firstTime === 'true' ? 'StudyBoard' : 'Landing'*/'Register2'} headerMode='none'>
+            <Navigator initialRouteName={/*firstTime === 'true' ? 'StudyBoard' : 'Landing'*/'RegisterClassSuccess'} headerMode='none'>
                 <Screen name='StudyBoard' component={() => <Onboarding number='01.' boardType='study'
                 description='Encontre vários professores para ensinar você.' />} />
                 <Screen name='GiveClassBoard' component={() => <Onboarding number='02.' boardType='give-class'
@@ -57,6 +58,17 @@ const AppStack = () => {
                 <Screen name='Login' component={Login} />
                 <Screen name='Register' component={Register} />
                 <Screen name='Register2' component={Register2} />
+                <Screen name='RegisterSuccess' component={() => <Success title='Cadastro concluído!'
+                navigateTo='Login' button='Fazer login' description='Agora você faz parte da
+                plataforma da Proffy'/>} />
+                <Screen name='ForgotPasswordSuccess' component={() => <Success title='Redefinição Enviada!'
+                navigateTo='Login' button='Fazer login' description='Boa, agora é só checar o e-mail que foi
+                enviado para você redefinir sua senha
+                e aproveitar os estudos.'/>} />
+                <Screen name='RegisterClassSuccess' component={() => <Success title='Cadastro salvo!'
+                navigateTo='Landing' button='Voltar para o perfil' description='Tudo certo, seu cadastro está
+                na nossa lista de professores. Agora é
+                só ficar de olho no seu WhatsApp.'/>} />
             </Navigator>
         </NavigationContainer>
     )

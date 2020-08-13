@@ -14,6 +14,7 @@ import { Poppins_400Regular, Poppins_600SemiBold } from '@expo-google-fonts/popp
 import Register from '../Pages/Register'
 import Register2 from '../Pages/Register2'
 import Success from '../Pages/Success'
+import ForgotPassword from '../Pages/ForgotPassword'
 
 YellowBox.ignoreWarnings(['Looks like'])
 const { Navigator, Screen } = createStackNavigator()
@@ -47,7 +48,7 @@ const AppStack = () => {
 
     return (
         <NavigationContainer>
-            <Navigator initialRouteName={/*firstTime === 'true' ? 'StudyBoard' : 'Landing'*/'RegisterClassSuccess'} headerMode='none'>
+            <Navigator initialRouteName={/*firstTime === 'true' ? 'StudyBoard' : 'Landing'*/'ForgotPassword'} headerMode='none'>
                 <Screen name='StudyBoard' component={() => <Onboarding number='01.' boardType='study'
                 description='Encontre vários professores para ensinar você.' />} />
                 <Screen name='GiveClassBoard' component={() => <Onboarding number='02.' boardType='give-class'
@@ -58,6 +59,7 @@ const AppStack = () => {
                 <Screen name='Login' component={Login} />
                 <Screen name='Register' component={Register} />
                 <Screen name='Register2' component={Register2} />
+                <Screen name='ForgotPassword' component={ForgotPassword} />
                 <Screen name='RegisterSuccess' component={() => <Success title='Cadastro concluído!'
                 navigateTo='Login' button='Fazer login' description='Agora você faz parte da
                 plataforma da Proffy'/>} />

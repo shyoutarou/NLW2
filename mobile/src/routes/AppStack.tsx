@@ -48,7 +48,7 @@ const AppStack = () => {
 
     return (
         <NavigationContainer>
-            <Navigator initialRouteName={/*firstTime === 'true' ? 'StudyBoard' : 'Landing'*/'ForgotPassword'} headerMode='none'>
+            <Navigator initialRouteName={/*firstTime === 'true' ? 'StudyBoard' : 'Landing'*/'Landing'} headerMode='none'>
                 <Screen name='StudyBoard' component={() => <Onboarding number='01.' boardType='study'
                 description='Encontre vários professores para ensinar você.' />} />
                 <Screen name='GiveClassBoard' component={() => <Onboarding number='02.' boardType='give-class'

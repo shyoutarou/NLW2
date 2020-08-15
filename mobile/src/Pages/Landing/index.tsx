@@ -5,6 +5,7 @@ import { Archivo_400Regular, Archivo_700Bold, useFonts } from '@expo-google-font
 import { Poppins_400Regular, Poppins_600SemiBold } from '@expo-google-fonts/poppins'
 import { RectButton } from 'react-native-gesture-handler'
 import { useNavigation } from '@react-navigation/native'
+import { Feather } from '@expo/vector-icons'
 import api from '../../services/api'
 import AsyncStorage from '@react-native-community/async-storage'
 
@@ -40,6 +41,17 @@ const Landing = () => {
 
     return (
         <View style={styles.container}>
+            <View style={styles.profile}>
+                <View style={styles.profileInfo}>
+                    <Image style={styles.profileImage} source={{
+                        uri: "https://avatars2.githubusercontent.com/u/55261375?s=460&u=3c70552607a82dead0634c03ecf089e1616f2fa1&v=4"
+                    }} />
+                    <Text style={styles.profileName}>Breno Macêdo</Text>
+                </View>
+                <TouchableOpacity style={styles.logout}>
+                    <Feather size={20} color="#D4C2FF" name='log-out' />
+                </TouchableOpacity>
+            </View>
             <Image style={styles.banner} source={require('../../../assets/images/landing.png')} />
             <Text style={styles.title}>
                 Seja bem vindo, {'\n'}
@@ -124,5 +136,35 @@ const styles = StyleSheet.create({
         lineHeight: 20,
         maxWidth: 140,
         marginTop: 40
+    },
+    profile: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between'
+    },
+    profileInfo: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center'
+    },
+    profileName: {
+        color: "#D4C2FF",
+        fontSize: 14,
+        fontFamily: "Poppins_400Regular"
+    },
+    profileImage: {
+        width: 40,
+        height: 40,
+        borderRadius: 20,
+        backgroundColor: 'red',
+        marginRight: 20
+    },
+    logout: {
+        backgroundColor: "#774DD6",
+        borderRadius: 8,
+        width: 40,
+        height: 40,
+        justifyContent: 'center',
+        alignItems: 'center'
     }
 })

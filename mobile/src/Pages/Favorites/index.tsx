@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, StyleSheet, ScrollView } from 'react-native'
+import { View, Text, StyleSheet, ScrollView, Image } from 'react-native'
+import { Feather } from '@expo/vector-icons'
 import PageHeader from '../../Components/PageHeader'
 import TeacherItem from '../../Components/TeacherItem'
 import api from '../../services/api'
@@ -38,7 +39,13 @@ const Favorites = () => {
 
     return (
         <View style={styles.container}>
-            <PageHeader title="Meus proffys favoritos" />
+            <PageHeader title="Meus proffys favoritos"
+            headerRight={(
+                <View style={styles.proffys}>
+                    <Image source={require('../../../assets/images/icons/love.png')} />
+                    <Text style={styles.proffysDescription}>Nenhum proffy</Text>
+                </View>
+            )} />
             <ScrollView contentContainerStyle={{
                 paddingHorizontal: 16,
                 paddingBottom: 16
@@ -60,6 +67,17 @@ const styles = StyleSheet.create({
     },
     teacherList: {
         marginTop: -40
+    },
+    proffys: {
+        position: 'absolute',
+        bottom: 50,
+        right: 0,
+        flexDirection: 'row'
+    },
+    proffysDescription: {
+        marginLeft: 12,
+        color: "#D4C2FF",
+        fontFamily: 'Poppins_400Regular'
     }
 })
 

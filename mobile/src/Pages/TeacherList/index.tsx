@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet, Image } from 'react-native'
 import PageHeader from '../../Components/PageHeader'
 import TeacherItem from '../../Components/TeacherItem'
-import { ScrollView, TextInput, BorderlessButton, RectButton } from 'react-native-gesture-handler'
+import { ScrollView, TextInput, BorderlessButton, RectButton, TouchableOpacity } from 'react-native-gesture-handler'
 import { Feather } from '@expo/vector-icons'
 import api from '../../services/api'
 import AsyncStorage from '@react-native-community/async-storage'
@@ -61,9 +61,19 @@ const TeacherList = () => {
         <View style={styles.container}>
             <PageHeader
             headerRight={(
-                <BorderlessButton onPress={handleToggleFiltersVisible}>
-                    <Feather name='filter' size={20} color='#fff' />
-                </BorderlessButton>
+                <>
+                    <View style={styles.options}>
+                        <TouchableOpacity onPress={handleToggleFiltersVisible}>
+                            <Feather name='filter' size={20} color='#04D361' />
+                        </TouchableOpacity>
+                        <Text style={styles.filterDescription}>Filtrar por dia, hora e matéria</Text>
+                        <Feather style={styles.filterIcon} size={15} name={isFiltersVisible ? 'arrow-up-circle' : 'arrow-down-circle'} color='#D4C2FF' />
+                        <View style={styles.proffys}>
+                            <Image source={require('../../../assets/images/icons/nerd.png')} />
+                            <Text style={styles.proffysDescription}>Nenhum proffy</Text>
+                        </View>
+                    </View>
+                </>
             )}
             title="Proffys disponíveis">
                 {isFiltersVisible && (<View style={styles.searchForm}>
@@ -149,6 +159,36 @@ const styles = StyleSheet.create({
         color: "#fff",
         fontFamily: "Archivo_700Bold",
         fontSize: 16
+    },
+    options: {
+        marginBottom: 30,
+        flexDirection: 'row',
+        borderBottomWidth: 1,
+        borderColor: '#D4C2FF',
+        paddingBottom: 20
+    },
+    filterDescription: {
+        color: "#D4C2FF",
+        fontFamily: "Archivo_400Regular",
+        fontSize: 16,
+        marginLeft: 20,
+        marginRight: 20
+    },
+    filterIcon: {
+        position: 'relative',
+        top: 5
+    },
+    proffys: {
+        position: 'absolute',
+        right: 1,
+        bottom: 100,
+        flexDirection: 'row',
+        alignItems: 'center'
+    },
+    proffysDescription: {
+        marginLeft: 12,
+        color: "#D4C2FF",
+        fontFamily: 'Poppins_400Regular'
     }
 })
 

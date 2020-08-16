@@ -56,9 +56,7 @@ const Profile = () => {
                     <TextInput placeholder='Custo por aula' style={[styles.input]} />
                     <View style={styles.availbleSchedules}>
                         <Text style={[styles.formSessionTitle, { borderBottomWidth: 0 }]}>Horários disponíveis</Text>
-                        <TouchableOpacity>
-                            <Text style={styles.newSchedule}>+ Novo</Text>
-                        </TouchableOpacity>
+                
                     </View>
                     <View style={{ alignItems: 'center' }}>
                         <Text style={[styles.inputLabel, { alignSelf: 'flex-start' }]}>Dia da semana</Text>

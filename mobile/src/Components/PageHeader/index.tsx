@@ -35,9 +35,6 @@ const PageHeader: React.FC<PageHeaderProps> = ({ title, children, headerRight, l
                         {headerRight}
                     </View>
                 )}
-
-                
-
                 {children}
             </View>
          </>
@@ -65,7 +62,7 @@ const styles = StyleSheet.create({
         color: '#fff',
         fontSize: 24,
         lineHeight: 32,
-        maxWidth: 160,
+        maxWidth: 200,
         marginVertical: 40
     },
     header: {

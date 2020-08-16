@@ -39,7 +39,7 @@ const Favorites = () => {
 
     return (
         <View style={styles.container}>
-            <PageHeader title="Meus proffys favoritos"
+            <PageHeader title="Meus proffys favoritos" label='Estudar'
             headerRight={(
                 <View style={styles.proffys}>
                     <Image source={require('../../../assets/images/icons/love.png')} />

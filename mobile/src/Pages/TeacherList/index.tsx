@@ -63,7 +63,7 @@ const TeacherList = () => {
 
     return (
         <View style={styles.container}>
-            <PageHeader
+            <PageHeader label='Estudar'
             headerRight={(
                 <>
                     <View style={styles.options}>

@@ -5,11 +5,12 @@ import { useNavigation } from '@react-navigation/native'
 
 
 interface PageHeaderProps {
-    title: string
+    title?: string
     headerRight?: ReactNode
+    label: string
 }
 
-const PageHeader: React.FC<PageHeaderProps> = ({ title, children, headerRight }) => {
+const PageHeader: React.FC<PageHeaderProps> = ({ title, children, headerRight, label }) => {
 
     const navigation = useNavigation()
 
@@ -23,15 +24,17 @@ const PageHeader: React.FC<PageHeaderProps> = ({ title, children, headerRight })
                 <BorderlessButton onPress={handleGoBack}>
                     <Image resizeMode='contain' source={require('../../../assets/images/icons/back.png')} />
                 </BorderlessButton>
-                <Text style={styles.topBarText}>Estudar</Text>
+                <Text style={styles.topBarText}>{label}</Text>
                 <Image resizeMode='contain' source={require('../../../assets/images/logo.png')} />
             </View>
             <View style={styles.container}>
 
-                <View style={styles.header}>
-                    <Text style={styles.title}>{title}</Text>
-                    {headerRight}
-                </View>
+                {title && (
+                    <View style={styles.header}>
+                        <Text style={styles.title}>{title}</Text>
+                        {headerRight}
+                    </View>
+                )}
 
                 
 

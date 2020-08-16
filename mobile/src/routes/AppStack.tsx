@@ -15,6 +15,7 @@ import Register from '../Pages/Register'
 import Register2 from '../Pages/Register2'
 import Success from '../Pages/Success'
 import ForgotPassword from '../Pages/ForgotPassword'
+import Profile from '../Pages/Profile'
 
 YellowBox.ignoreWarnings(['Looks like'])
 const { Navigator, Screen } = createStackNavigator()
@@ -48,12 +49,13 @@ const AppStack = () => {
 
     return (
         <NavigationContainer>
-            <Navigator initialRouteName={/*firstTime === 'true' ? 'StudyBoard' : 'Landing'*/'StudyTabs'} headerMode='none'>
+            <Navigator initialRouteName={/*firstTime === 'true' ? 'StudyBoard' : 'Landing'*/'Profile'} headerMode='none'>
                 <Screen name='StudyBoard' component={() => <Onboarding number='01.' boardType='study'
                 description='Encontre vários professores para ensinar você.' />} />
                 <Screen name='GiveClassBoard' component={() => <Onboarding number='02.' boardType='give-class'
                 description='Ou dê aulas sobre o que você mais conhece.' />} />
                 <Screen name='Landing' component={Landing} />
+                <Screen name='Profile' component={Profile} />
                 <Screen name='GiveClasses' component={GiveClasses} />
                 <Screen name='StudyTabs' component={StudyTabs} />
                 <Screen name='Login' component={Login} />

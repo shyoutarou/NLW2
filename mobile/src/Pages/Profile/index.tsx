@@ -5,6 +5,9 @@ import { Feather } from '@expo/vector-icons'
 import { RectButton, TextInput, ScrollView, TouchableOpacity } from 'react-native-gesture-handler'
 import UserContext from '../../Contexts/UserContext'
 import api from '../../services/api'
+import * as Permissions from 'expo-permissions'
+import * as ImagePicker from 'expo-image-picker'
+import Constants from 'expo-constants'
 
 const Profile = () => {
 
@@ -32,6 +35,55 @@ const Profile = () => {
     const [cost, setCost] = useState(String(User.user?.cost))
     const [subject, setSubject] = useState(User.user?.subject)
     const [schedules, setSchedules] = useState<ISchedule[]>([])
+
+    useEffect(() => {
+        getPermissionAsync()
+    }, [])
+
+    const getPermissionAsync = async () => {
+        if (Constants.platform?.ios) {
+          const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL)
+          if (status !== 'granted') {
+            alert('Sorry, we need camera roll permissions to make this work!')
+          }
+        }
+    }
+
+    const pickImage = async () => {
+        try {
+          let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.All,
+            allowsEditing: true,
+            aspect: [4, 3],
+            quality: 1,
+            exif: true
+          });
+          if (!result.cancelled) {
+            const formData = new FormData()
+            formData.append('avatar', {
+                name: `${Date.now()}.png`,
+                type: 'image/png',
+                uri: result.uri
+            } as unknown as Blob)
+            const newAvatar = await api.put(`profiles/image/${User.user?.id}`, formData)
+            if(User.user) {
+                User.setUser({
+                    avatar: newAvatar.data.avatar,
+                    name: User.user?.name,
+                    email: User.user?.email,
+                    bio: User.user?.bio,
+                    whatsapp: User.user?.whatsapp,
+                    id: User.user?.id,
+                    cost: User.user?.cost,
+                    subject: User.user?.subject
+                })
+            }
+          }
+    
+        } catch (E) {
+          console.log(E)
+        }
+    }
 
     const handleUpdate = async () => {
         try {
@@ -107,9 +159,9 @@ const Profile = () => {
                 style={styles.profileImage}>
                     <View>
                         <Image style={styles.profileImagePic} source={{
-                            uri: `${User.user?.avatar}`
+                            uri: `http://10.0.0.106:3333/uploads/${User.user?.avatar}`
                         }} />
-                        <RectButton style={styles.profileChangeImage}>
+                        <RectButton onPress={pickImage} style={styles.profileChangeImage}>
                             <Feather color='white' size={20} name='camera' />
                         </RectButton>
                     </View>

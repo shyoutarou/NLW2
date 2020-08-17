@@ -68,7 +68,7 @@ const Landing = () => {
             <View style={styles.profile}>
                 <TouchableOpacity onPress={() => navigation.navigate('Profile')} style={styles.profileInfo}>
                     <Image style={styles.profileImage} source={{
-                        uri: `http://localhost:3333/uploads/${route.params.user.avatar}`
+                        uri: `http://10.0.0.106:3333/uploads/${route.params.user.avatar}`
                     }} />
                     <Text style={styles.profileName}>{route.params.user.name}</Text>
                 </TouchableOpacity>

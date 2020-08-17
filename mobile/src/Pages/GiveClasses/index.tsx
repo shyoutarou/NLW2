@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import { View, Text, StyleSheet, Image, ImageBackground, Picker, Alert } from 'react-native'
 import PageHeader from '../../Components/PageHeader'
 import DateTimePicker from '@react-native-community/datetimepicker'
@@ -68,7 +68,7 @@ const GiveClasses = () => {
                     <Text style={styles.formSessionTitle}>Seus dados</Text>
                     <View style={styles.profileInfo}>
                         <Image source={{
-                            uri: `http://localhost:3333/uploads/${User.user?.avatar}`
+                            uri: `http://10.0.0.106:3333/uploads/${User.user?.avatar}`
                         }} style={styles.profileInfoImage} />
                         <View style={{ marginLeft: 20 }}>
                             <Text style={styles.profileInfoName}>{User.user?.name}</Text>

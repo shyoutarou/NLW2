@@ -8,6 +8,7 @@ interface IUser {
     whatsapp: string
     bio: string
     email: string
+    cost: number
 }
 
 interface IContext {

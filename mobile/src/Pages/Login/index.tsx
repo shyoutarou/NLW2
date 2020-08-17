@@ -1,10 +1,11 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { View, Text, StyleSheet, Image, ImageBackground, Alert } from 'react-native'
 import { TextInput, TouchableOpacity, RectButton } from 'react-native-gesture-handler'
 import { Feather } from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/native'
 import api from '../../services/api'
 import AsyncStorage from '@react-native-community/async-storage'
+import UserContext from '../../Contexts/UserContext'
 
 const Login = () => {
 
@@ -13,9 +14,20 @@ const Login = () => {
     const [emailFocus, setEmailFocus] = useState(false)
     const [passwordFocus, setPasswordFocus] = useState(false)
     const [checkbox, setCheckbox] = useState(false)
-    const [eye, setEye] = useState(false)
+    const [eye, setEye] = useState(true)
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+
+    const User = useContext(UserContext)
+
+    useEffect(() => {
+        if(User.user) {
+            navigation.navigate('Landing', {
+                user: User.user
+            })
+        }
+    }, [])
+
 
     const handleLogin = async () => {
         try {
@@ -26,6 +38,9 @@ const Login = () => {
             if(checkbox) {
                 AsyncStorage.setItem('token', resp.data.token)
             }
+
+            User.setToken(resp.data.token)
+            User.setUser(resp.data.user)
 
             navigation.navigate('Landing', {
                 user: resp.data.user

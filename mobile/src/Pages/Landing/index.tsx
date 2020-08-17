@@ -4,21 +4,40 @@ import { AppLoading } from 'expo'
 import { Archivo_400Regular, Archivo_700Bold, useFonts } from '@expo-google-fonts/archivo'
 import { Poppins_400Regular, Poppins_600SemiBold } from '@expo-google-fonts/poppins'
 import { RectButton } from 'react-native-gesture-handler'
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation, useRoute, RouteProp } from '@react-navigation/native'
 import { Feather } from '@expo/vector-icons'
 import api from '../../services/api'
 import AsyncStorage from '@react-native-community/async-storage'
 
 const Landing = () => {
 
+    type IUser = {
+        login: {
+            user: {
+                id: number
+                name: string
+                subject: string
+                avatar: string
+                whatsapp: string
+                bio: string
+                email: string
+            }
+        }
+    }
+
     const navigation = useNavigation()
 
     const [connections, setConnections] = useState(0)
+
     useEffect(() => {
         api.get('/connections').then(resp => {
             setConnections(resp.data.total)
         }).catch(err => console.log(err))
+
+        console.log(route.params.user)
     }, [])
+
+    const route = useRoute<RouteProp<IUser, 'login'>>()
 
     const handleNavigateToGiveClassesPage = () => {
         navigation.navigate('GiveClasses')
@@ -26,6 +45,11 @@ const Landing = () => {
 
     const handleNavigateStudyTabsPage = () => {
         navigation.navigate('StudyTabs')
+    }
+
+    const logout = () => {
+        AsyncStorage.setItem('token', '')
+        navigation.navigate('Login')
     }
 
     let [fontsLoaded] = useFonts({
@@ -42,13 +66,13 @@ const Landing = () => {
     return (
         <View style={styles.container}>
             <View style={styles.profile}>
-                <View style={styles.profileInfo}>
+                <TouchableOpacity onPress={() => navigation.navigate('Profile')} style={styles.profileInfo}>
                     <Image style={styles.profileImage} source={{
-                        uri: "https://avatars2.githubusercontent.com/u/55261375?s=460&u=3c70552607a82dead0634c03ecf089e1616f2fa1&v=4"
+                        uri: `http://localhost:3333/uploads/${route.params.user.avatar}`
                     }} />
-                    <Text style={styles.profileName}>Breno Macêdo</Text>
-                </View>
-                <TouchableOpacity style={styles.logout}>
+                    <Text style={styles.profileName}>{route.params.user.name}</Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={logout} style={styles.logout}>
                     <Feather size={20} color="#D4C2FF" name='log-out' />
                 </TouchableOpacity>
             </View>

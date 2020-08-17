@@ -1,23 +1,65 @@
 import React, { useState, useContext } from 'react'
-import { View, Text, StyleSheet, Image, ImageBackground, Picker } from 'react-native'
+import { View, Text, StyleSheet, Image, ImageBackground, Picker, Alert } from 'react-native'
 import PageHeader from '../../Components/PageHeader'
 import DateTimePicker from '@react-native-community/datetimepicker'
 import UserContext from '../../Contexts/UserContext'
 import { RectButton, TextInput, ScrollView, TouchableOpacity } from 'react-native-gesture-handler'
+import api from '../../services/api'
+import { useNavigation } from '@react-navigation/native'
 
 const GiveClasses = () => {
 
-    const [subject, setSubject] = useState('Física')
+    const [day, setDay] = useState(0)
     const [from, setFrom] = useState('12:00')
     const [to, setTo] = useState('12:00')
     const [editingValue, setEditingValue] = useState('')
     const [showPicker, setShowPicker] = useState(false)
 
+    const navigation = useNavigation()
     const User = useContext(UserContext)
     
+    const handleAddClass = async () => {
+        try {
+            await api.post(`/classes/${User.user?.id}`, {
+                name: User.user?.name,
+                avatar: User.user?.avatar,
+                whatsapp: User.user?.whatsapp,
+                bio: User.user?.bio,
+                subject: User.user?.subject,
+                cost: User.user?.cost,
+                schedule: [
+                    { week_day: day, from, to }
+                ]
+            })
+
+            navigation.navigate('RegisterClassSuccess')
+        } catch(e) {
+            Alert.alert('Erro ao cadastrar')
+        }
+    }
+
+    const numberToDay = (number: number) => {
+        switch(number){
+            case 0:
+                return 'Segunda-Feira';
+            case 1:
+                return 'Terça-Feira';
+            case 2:
+                return 'Quarta-Feira';
+            case 3:
+                return 'Quinta-Feira';
+            case 4:
+                return 'Sexta-Feira';
+            case 5:
+                return 'Sábado';
+            case 6:
+                return 'Domingo';
+        }
+    }
+
     return (
         <ScrollView>
-            <PageHeader label='Meu perfil' title='Que incrível que você quer dar aulas!'>
+            <PageHeader label='Dar aulas' title='Que incrível que você quer dar aulas!'>
                 <Text style={styles.subtitle}>O primeiro passo é preencher este
                 formulário de inscrição.</Text>
             </PageHeader>
@@ -26,32 +68,32 @@ const GiveClasses = () => {
                     <Text style={styles.formSessionTitle}>Seus dados</Text>
                     <View style={styles.profileInfo}>
                         <Image source={{
-                            uri: 'https://avatars2.githubusercontent.com/u/55261375?s=460&u=3c70552607a82dead0634c03ecf089e1616f2fa1&v=4'
+                            uri: `http://localhost:3333/uploads/${User.user?.avatar}`
                         }} style={styles.profileInfoImage} />
                         <View style={{ marginLeft: 20 }}>
-                            <Text style={styles.profileInfoName}>Breno Macêdo</Text>
-                            <Text style={styles.profileInfoSubject}>Física</Text>
+                            <Text style={styles.profileInfoName}>{User.user?.name}</Text>
+                            <Text style={styles.profileInfoSubject}>{User.user?.subject}</Text>
                         </View>
                     </View>
                     <Text style={styles.inputLabel}>Whatsapp</Text>
                     <View style={styles.fakeInput}>
-                        <Text style={styles.subject}>988178359</Text>
+                        <Text style={styles.subject}>{User.user?.whatsapp}</Text>
                     </View>
                     <Text style={styles.inputLabel}>Biografia</Text>
                     <View style={[styles.fakeInput,
                         { height: 360, justifyContent: 'flex-start', paddingTop: 10, marginBottom: 10 }]}>
-                        <Text style={styles.subject}>Minha biografia aqui!</Text>
+                        <Text style={styles.subject}>{User.user?.bio}</Text>
                     </View>
                     <Text style={styles.formSessionTitle}>Sobre a aula</Text>
 
                     <Text style={styles.inputLabel}>Matéria</Text>
                     <View style={styles.fakeInput}>
-                        <Text style={styles.subject}>Física</Text>
+                        <Text style={styles.subject}>{User.user?.subject}</Text>
                     </View>
 
                     <Text style={styles.inputLabel}>Custo por aula</Text>
                     <View style={styles.fakeInput}>
-                        <Text style={styles.subject}>R$ 20,00</Text>
+                        <Text style={styles.subject}>R$ {User.user?.cost}</Text>
                     </View>
 
                     <View style={styles.availbleSchedules}>
@@ -61,15 +103,17 @@ const GiveClasses = () => {
                         <Text style={[styles.inputLabel, { alignSelf: 'flex-start' }]}>Dia da semana</Text>
                         <View>
                         <View style={styles.pickerLabel}>
-                            <Text style={styles.subject}>{subject}</Text>
+                            <Text style={styles.subject}>{numberToDay(Number(day))}</Text>
                         </View>
-                        <Picker selectedValue={subject} onValueChange={val => setSubject(val)}
+                        <Picker selectedValue={day} onValueChange={val => setDay(val)}
                         style={styles.picker}>
-                            <Picker.Item value='Matemática' label='Matemática' />
-                            <Picker.Item value='Artes' label='Artes' />
-                            <Picker.Item value='Biologia' label='Biologia' />
-                            <Picker.Item value='Física' label='Física' />
-                            <Picker.Item value='Química' label='Química' />
+                            <Picker.Item value={0} label='Segunda-Feira' />
+                            <Picker.Item value={1} label='Terça-Feira' />
+                            <Picker.Item value={2} label='Quarta-Feira' />
+                            <Picker.Item value={3} label='Quinta-Feira' />
+                            <Picker.Item value={4} label='Sexta-Feira' />
+                            <Picker.Item value={5} label='Sábado' />
+                            <Picker.Item value={6} label='Domingo' />
                         </Picker>
                     </View>
                         <View style={{ flexDirection: 'row', borderBottomWidth: 1, borderColor: '#ccc',
@@ -113,7 +157,7 @@ const GiveClasses = () => {
                             }
                         }} />
                     )}
-                    <RectButton style={styles.button}>
+                    <RectButton onPress={handleAddClass} style={styles.button}>
                         <Text style={styles.buttonText}>
                             Salvar cadastro
                         </Text>

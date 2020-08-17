@@ -1,12 +1,104 @@
-import React, { useState } from 'react'
-import { View, Text, StyleSheet, Image, ImageBackground, Picker } from 'react-native'
+import React, { useState, useContext, useEffect } from 'react'
+import { View, Text, StyleSheet, Image, ImageBackground, Picker, Alert } from 'react-native'
 import PageHeader from '../../Components/PageHeader'
 import { Feather } from '@expo/vector-icons'
 import { RectButton, TextInput, ScrollView, TouchableOpacity } from 'react-native-gesture-handler'
+import UserContext from '../../Contexts/UserContext'
+import api from '../../services/api'
 
 const Profile = () => {
 
-    const [subject, setSubject] = useState('Física')
+    interface ISchedule {
+        id: number
+        subject: string
+        cost: number
+        user_id: number
+        week_day: number
+        from: number
+        to: number
+        class_id: number
+    }
+
+    const User = useContext(UserContext)
+    useEffect(() => {
+        api.get<ISchedule[]>(`classes/${User.user?.id}`).then(resp => {
+            setSchedules(resp.data)
+        }).catch(err => {})
+    }, [])
+
+    const [name, setName] = useState(User.user?.name)
+    const [whatsapp, setWhatsapp] = useState(User.user?.whatsapp)
+    const [bio, setBio] = useState(User.user?.bio)
+    const [cost, setCost] = useState(String(User.user?.cost))
+    const [subject, setSubject] = useState(User.user?.subject)
+    const [schedules, setSchedules] = useState<ISchedule[]>([])
+
+    const handleUpdate = async () => {
+        try {
+            api.put(`profilesupdate/${User.user?.id}`, {
+                whatsapp, name, bio, cost, subject
+            })
+
+            if(User.user?.avatar && whatsapp && name && bio && cost && subject) {
+                User.setUser({
+                    avatar: User.user?.avatar,
+                    whatsapp,
+                    name,
+                    bio,
+                    cost: Number(cost),
+                    subject,
+                    id: User.user?.id,
+                    email: User.user?.email
+                })
+            }
+
+            Alert.alert('Usuário atualizado com sucesso!')
+        } catch(e) {
+            Alert.alert('Erro ao atualizar seu usuário')
+        }
+    }
+
+    const numberToDay = (number: number) => {
+        switch(number){
+            case 0:
+                return 'Segunda-Feira';
+            case 1:
+                return 'Terça-Feira';
+            case 2:
+                return 'Quarta-Feira';
+            case 3:
+                return 'Quinta-Feira';
+            case 4:
+                return 'Sexta-Feira';
+            case 5:
+                return 'Sábado';
+            case 6:
+                return 'Domingo';
+        }
+    }
+
+    const numberToTime = (number: number) => {
+        const first = Math.floor(number / 60)
+        const firstString = String(first)
+        const firstStringFinal = firstString.length === 1 ? `0${firstString}` : firstString
+
+        const second = Math.floor(number % 60)
+        const secondString = String(second)
+        const secondStringFinal = secondString.length === 1 ? `0${secondString}` : secondString
+
+        return `${firstStringFinal}:${secondStringFinal}`
+    }
+
+    const handleDeleteClass = async (index: number, class_id: number) => {
+
+        await api.delete(`/classes/${class_id}`)
+
+        const newArray = schedules.filter((scheduleItem, scheduleIndex) => {
+            return index !== scheduleIndex
+        })
+
+        setSchedules(newArray)
+    }
 
     return (
         <ScrollView>
@@ -15,27 +107,28 @@ const Profile = () => {
                 style={styles.profileImage}>
                     <View>
                         <Image style={styles.profileImagePic} source={{
-                            uri: "https://avatars2.githubusercontent.com/u/55261375?s=460&u=3c70552607a82dead0634c03ecf089e1616f2fa1&v=4"
+                            uri: `${User.user?.avatar}`
                         }} />
                         <RectButton style={styles.profileChangeImage}>
                             <Feather color='white' size={20} name='camera' />
                         </RectButton>
                     </View>
-                    <Text style={styles.profileName}>Breno Macêdo</Text>
-                    <Text style={styles.profileSubject}>Física</Text>
+                    <Text style={styles.profileName}>{User.user?.name}</Text>
+                    <Text style={styles.profileSubject}>{User.user?.subject}</Text>
                 </ImageBackground>
             </PageHeader>
             <View style={styles.formContainer}>
                 <View style={styles.form}>
                     <Text style={styles.formSessionTitle}>Seus dados</Text>
                     <Text style={styles.inputLabel}>Nome</Text>
-                    <TextInput placeholder='Nome' style={styles.input} />
-                    <Text style={styles.inputLabel}>Email</Text>
-                    <TextInput placeholder='Email' style={styles.input} />
+                    <TextInput value={name} onChangeText={t => setName(t)}
+                    placeholder='Nome' style={styles.input} />
                     <Text style={styles.inputLabel}>Whatsapp</Text>
-                    <TextInput placeholder='Whatsapp' style={styles.input} />
+                    <TextInput value={whatsapp} onChangeText={t => setWhatsapp(t)}
+                    placeholder='Whatsapp' style={styles.input} />
                     <Text style={styles.inputLabel}>Biografia</Text>
-                    <TextInput textAlignVertical="top" numberOfLines={20} multiline={true} placeholder='Biografia' style={styles.largeInput} />
+                    <TextInput value={bio} onChangeText={t => setBio(t)}
+                    textAlignVertical="top" numberOfLines={20} multiline={true} placeholder='Biografia' style={styles.largeInput} />
                     <Text style={styles.formSessionTitle}>Sobre a aula</Text>
                     <Text style={styles.inputLabel}>Matéria</Text>
                     <View>
@@ -53,37 +146,44 @@ const Profile = () => {
                     </View>
                     
                     <Text style={styles.inputLabel}>Custo por aula</Text>
-                    <TextInput placeholder='Custo por aula' style={[styles.input]} />
+                    <TextInput value={cost} onChangeText={t => setCost(t)}
+                    placeholder='Custo por aula' style={[styles.input]} />
                     <View style={styles.availbleSchedules}>
                         <Text style={[styles.formSessionTitle, { borderBottomWidth: 0 }]}>Horários disponíveis</Text>
                 
                     </View>
-                    <View style={{ alignItems: 'center' }}>
-                        <Text style={[styles.inputLabel, { alignSelf: 'flex-start' }]}>Dia da semana</Text>
-                        <View style={styles.fakeInput}>
-                            <Text style={styles.subject}>Terça-Feira</Text>
-                        </View>
-                        <View style={{ flexDirection: 'row', borderBottomWidth: 1, borderColor: 'red',
-                        paddingBottom: 24 }}>
+                    <View>
+                        {schedules.map((schedule, index) => {
+                            return (
+                                <View key={index} style={{ alignItems: 'center' }}>
+                                    <Text style={[styles.inputLabel, { alignSelf: 'flex-start' }]}>Dia da semana</Text>
+                                    <View style={styles.fakeInput}>
+                                        <Text style={styles.subject}>{numberToDay(schedule.week_day)}</Text>
+                                    </View>
+                                    <View style={{ flexDirection: 'row', borderBottomWidth: 1, borderColor: 'red',
+                                    paddingBottom: 24 }}>
 
-                            <View style={{ flex: 1, marginRight: 8 }}>
-                                <Text style={styles.inputLabel}>das</Text>
-                                <View style={styles.fakeInput}>
-                                    <Text style={styles.subject}>8:00</Text>
+                                        <View style={{ flex: 1, marginRight: 8 }}>
+                                            <Text style={styles.inputLabel}>das</Text>
+                                            <View style={styles.fakeInput}>
+                                                <Text style={styles.subject}>{numberToTime(schedule.from)}</Text>
+                                            </View>
+                                        </View>
+
+                                        <View style={{ flex: 1, marginLeft: 8 }}>
+                                            <Text style={styles.inputLabel}>até</Text>
+                                            <View style={styles.fakeInput}>
+                                                <Text style={styles.subject}>{numberToTime(schedule.to)}</Text>
+                                            </View>
+                                        </View>
+
+                                    </View>    
+                                    <Text onPress={() => handleDeleteClass(index, schedule.class_id)} style={styles.deleteSchedule}>Excluir horário</Text>
                                 </View>
-                            </View>
-
-                            <View style={{ flex: 1, marginLeft: 8 }}>
-                                <Text style={styles.inputLabel}>até</Text>
-                                <View style={styles.fakeInput}>
-                                    <Text style={styles.subject}>12:00</Text>
-                                </View>
-                            </View>
-
-                        </View>    
-                        <Text style={styles.deleteSchedule}>Excluir horário</Text>
+                            )
+                        })}
                     </View>
-                    <RectButton style={styles.button}>
+                    <RectButton onPress={handleUpdate} style={styles.button}>
                         <Text style={styles.buttonText}>
                             Salvar alterações
                         </Text>

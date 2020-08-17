@@ -93,7 +93,10 @@ const Profile = () => {
         return `${firstStringFinal}:${secondStringFinal}`
     }
 
-    const handleDeleteClass = (index: number, class_id: number) => {
+    const handleDeleteClass = async (index: number, class_id: number) => {
+
+        await api.delete(`classes/${class_id}`)
+
         const newArray = classes.filter((scheduleItem, scheduleIndex) => {
             return index !== scheduleIndex
         })

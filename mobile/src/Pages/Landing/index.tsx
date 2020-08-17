@@ -33,8 +33,6 @@ const Landing = () => {
         api.get('/connections').then(resp => {
             setConnections(resp.data.total)
         }).catch(err => console.log(err))
-
-        console.log(route.params.user)
     }, [])
 
     const route = useRoute<RouteProp<IUser, 'login'>>()

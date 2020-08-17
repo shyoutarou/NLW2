@@ -7,6 +7,7 @@ import { Feather } from '@expo/vector-icons'
 import api from '../../services/api'
 import AsyncStorage from '@react-native-community/async-storage'
 import DateTimePicker from '@react-native-community/datetimepicker'
+import { useFocusEffect, useNavigation } from '@react-navigation/native'
 
 interface Teacher {
     id: number
@@ -22,6 +23,8 @@ const TeacherList = () => {
 
     const date = new Date()
 
+    const navigation = useNavigation()
+
     const [isFiltersVisible, setIsFiltersVisible] = useState(false)
 
     const [subject, setSubject] = useState('Física')
@@ -31,6 +34,12 @@ const TeacherList = () => {
     const [showPicker, setShowPicker] = useState(false)
 
     const [favorites, setFavorites] = useState<number[]>([])
+
+    useEffect(() => {
+        const listener = navigation.addListener('focus', () => {
+            setTeachers([])
+        })
+    })
 
     const loadFavorites = () => {
         AsyncStorage.getItem('favorites').then(response => {
@@ -59,6 +68,7 @@ const TeacherList = () => {
         })
         setIsFiltersVisible(false)
         setTeachers(resp.data)
+        console.log(resp.data)
     }
 
     return (

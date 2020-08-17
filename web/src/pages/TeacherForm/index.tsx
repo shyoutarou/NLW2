@@ -92,7 +92,7 @@ const TeacherForm = () => {
                         <legend>Seus dados</legend>
                         <div className="page-teacher-info">
                             <div className="page-teacher-info-user">
-                                <img src="https://avatars2.githubusercontent.com/u/55261375?s=460&u=3c70552607a82dead0634c03ecf089e1616f2fa1&v=4" alt="user" className="page-teacher-profile"/>
+                                <img src={`http://localhost:3333/uploads/${user?.avatar}`} alt="user" className="page-teacher-profile"/>
                                 <h3>{user?.name}</h3>
                             </div>
                             <Input name="whatsapp" readOnly label="Whatsapp" value={user?.whatsapp} />

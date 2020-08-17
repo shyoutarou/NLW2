@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { View, Text, StyleSheet, ScrollView, Image } from 'react-native'
 import { Feather } from '@expo/vector-icons'
 import PageHeader from '../../Components/PageHeader'
@@ -6,6 +6,7 @@ import TeacherItem from '../../Components/TeacherItem'
 import api from '../../services/api'
 import AsyncStorage from '@react-native-community/async-storage'
 import { useFocusEffect } from '@react-navigation/native'
+import UserContext from '../../Contexts/UserContext'
 
 interface Teacher {
     id: number
@@ -19,6 +20,8 @@ interface Teacher {
 
 const Favorites = () => {
 
+    const User = useContext(UserContext)
+
     const [favorites, setFavorites] = useState([])
 
     useFocusEffect(
@@ -27,14 +30,9 @@ const Favorites = () => {
         }, [])
       )
 
-    const loadFavorites = () => {
-        AsyncStorage.getItem('favorites').then(response => {
-            if(response) {
-                const favoriteTeachers = JSON.parse(response)
-
-                setFavorites(favoriteTeachers)
-            }
-        }).catch(err => console.log(err))
+    const loadFavorites = async () => {
+        const favorites = await api.get(`/favorites?user_id=${User.user?.id}`)
+        setFavorites(favorites.data)
     }
 
     return (

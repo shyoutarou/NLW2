@@ -142,7 +142,7 @@ const GiveClasses = () => {
                         </View>    
                     </View>
                     {showPicker && (
-                        <DateTimePicker mode='time' value={new Date(Date.now())} onChange={(event, date) => {
+                        <DateTimePicker is24Hour={true} mode='time' value={new Date(Date.now())} onChange={(event, date) => {
                             if(date) {
                                 setShowPicker(false)
                                 const stringDate = String(date)

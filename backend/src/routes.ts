@@ -2,8 +2,9 @@ import { Router } from 'express'
 import ClassesController from './controllers/ClassesController'
 import ConnectionsController from './controllers/ConnectionsController'
 import UsersController from './controllers/UsersController'
-import auth from './middlewares/auth'
 import ProfilesController from './controllers/ProfilesController'
+import FavoritesController from './controllers/FavoritesController'
+import auth from './middlewares/auth'
 import multer from 'multer'
 import multerConfig from './config/multerConfig'
 
@@ -25,5 +26,8 @@ routes.put('/profilesupdate/:id', ProfilesController.updateProfile)
 routes.post('/profiles/resetpassword', ProfilesController.resetPassword)
 routes.put('/profiles/resetpassword/:id', ProfilesController.updatePassword)
 routes.post('/auth', auth, ProfilesController.profileAuth)
+routes.get('/favorites', FavoritesController.listFavorite)
+routes.post('/favorites', FavoritesController.createFavorite)
+routes.delete('/favorites/:user/:favorite', FavoritesController.deleteFavorite)
 
 export default routes

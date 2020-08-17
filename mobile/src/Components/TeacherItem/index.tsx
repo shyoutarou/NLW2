@@ -1,8 +1,9 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { View, Text, StyleSheet, Image, Linking } from 'react-native'
 import { RectButton } from 'react-native-gesture-handler'
 import AsyncStorage from '@react-native-community/async-storage'
 import api from '../../services/api'
+import UserContext from '../../Contexts/UserContext'
 
 interface Teacher {
     teacher: TeacherProps
@@ -21,6 +22,8 @@ interface TeacherProps {
 
 const TeacherItem: React.FC<Teacher> = ({ teacher, favorited }) => {
 
+    const User = useContext(UserContext)
+
     const [isFavorited, setIsFavorited] = useState(favorited)
 
     const handleWhatsapp = () => {
@@ -31,27 +34,17 @@ const TeacherItem: React.FC<Teacher> = ({ teacher, favorited }) => {
     }
 
     const handleToggleFavorite = async () => {
-        const favorites = await AsyncStorage.getItem('favorites')
-        let favoritesArray = []
-
-        if(favorites) {
-            favoritesArray = JSON.parse(favorites)
-        }
-
         if(isFavorited) {
-            const favoriteIndex = favoritesArray.findIndex((teacherItem: TeacherProps) => {
-                return teacherItem.id === teacher.id
-            })
-
-            favoritesArray.splice(favoriteIndex, 1)
+            await api.delete(`/favorites/${User.user?.id}/${teacher.id}`)
             setIsFavorited(false)
         } else {
-            
-
-            favoritesArray.push(teacher)
+            await api.post('/favorites', {
+                user_id: User.user?.id,
+                favorite_id: teacher.id
+            })
+    
             setIsFavorited(true)
         }
-        await AsyncStorage.setItem('favorites', JSON.stringify(favoritesArray))
     }
 
     return (

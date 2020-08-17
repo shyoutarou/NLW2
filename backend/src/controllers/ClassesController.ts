@@ -73,6 +73,8 @@ export default {
         .join('class_schedule', 'classes.id', '=', 'class_schedule.class_id')
         .select(['classes.*', 'users.*'])
 
+        const schedules = await db('class_schedule').where({})
+
         return res.json(classes)
     },
     async userClasses(req: Request, res: Response) {

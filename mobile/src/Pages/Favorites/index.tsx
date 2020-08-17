@@ -41,7 +41,7 @@ const Favorites = () => {
             headerRight={(
                 <View style={styles.proffys}>
                     <Image source={require('../../../assets/images/icons/love.png')} />
-                    <Text style={styles.proffysDescription}>Nenhum proffy</Text>
+                    <Text style={styles.proffysDescription}>{favorites.length} proffy(s)</Text>
                 </View>
             )} />
             <ScrollView contentContainerStyle={{

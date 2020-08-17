@@ -32,7 +32,7 @@ const TeacherList = () => {
     const [time, setTime] = useState('12:00')
     const [teachers, setTeachers] = useState<Teacher[]>([])
     const [showPicker, setShowPicker] = useState(false)
-
+    const [schedules, setSchedules] = useState([])
     const [favorites, setFavorites] = useState<number[]>([])
 
     useEffect(() => {
@@ -41,24 +41,12 @@ const TeacherList = () => {
         })
     })
 
-    const loadFavorites = () => {
-        AsyncStorage.getItem('favorites').then(response => {
-            if(response) {
-                const favoriteTeachers = JSON.parse(response)
-                const favoriteTeachersIds = favoriteTeachers.map((item: Teacher) => item.id)
-
-                setFavorites(favoriteTeachersIds)
-            }
-        }).catch(err => console.log(err))
-    }
-
 
     const handleToggleFiltersVisible = () => {
         setIsFiltersVisible(!isFiltersVisible)
     }
 
     const handleFilterSubmit = async () => {
-        loadFavorites()
         const resp = await api.get('/classes', {
             params: {
                 subject,
@@ -68,7 +56,6 @@ const TeacherList = () => {
         })
         setIsFiltersVisible(false)
         setTeachers(resp.data)
-        console.log(resp.data)
     }
 
     return (
@@ -84,7 +71,7 @@ const TeacherList = () => {
                         <Feather style={styles.filterIcon} size={15} name={isFiltersVisible ? 'arrow-up-circle' : 'arrow-down-circle'} color='#D4C2FF' />
                         <View style={styles.proffys}>
                             <Image source={require('../../../assets/images/icons/nerd.png')} />
-                            <Text style={styles.proffysDescription}>Nenhum proffy</Text>
+                            <Text style={styles.proffysDescription}>{teachers.length} proffy(s)</Text>
                         </View>
                     </View>
                 </>

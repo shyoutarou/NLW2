@@ -1,13 +1,45 @@
 import React, { useState } from 'react'
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet, Alert } from 'react-native'
 import { Feather } from '@expo/vector-icons'
 import { TouchableOpacity, TextInput, RectButton } from 'react-native-gesture-handler'
+import { useNavigation, useRoute, RouteProp } from '@react-navigation/native'
+import api from '../../services/api'
 
 const Register2 = () => {
+
+    type IRegister = {
+        register: {
+            name: string
+        }
+    }
 
     const [nameFocused, setNameFocused] = useState(false)
     const [lastNameFocused, setLastNameFocused] = useState(false)
     const [eye, setEye] = useState(false)
+    const [password, setPassword] = useState('')
+    const [email, setEmail] = useState('')
+
+    const route = useRoute<RouteProp<IRegister, 'register'>>()
+
+    const navigation = useNavigation()
+
+    const handleRegister = async () => {
+        try {
+            await api.post('/users', {
+                name: route.params.name,
+                email,
+                password,
+                avatar: "default.png",
+                bio: "",
+                whatsapp: "",
+                subject: ""
+            })
+
+            navigation.navigate('RegisterSuccess')
+        } catch (e) {
+            Alert.alert('Erro ao cadastrar', 'Tente novamente mais tarde')
+        }
+    }
 
     return (
         <View style={styles.container}>
@@ -16,7 +48,7 @@ const Register2 = () => {
                     <View style={styles.ballOff}></View>
                     <View style={styles.ball}></View>
                 </View>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={() => navigation.goBack()}>
                     <Feather color='#9C98A6' name='arrow-left' size={25} />
                 </TouchableOpacity>
             </View>
@@ -30,11 +62,12 @@ const Register2 = () => {
             <View style={styles.form}>
                 <Text style={styles.formTitle}>02. Email e Senha</Text>
                 <TextInput placeholder='E-mail' onFocus={() => setNameFocused(true)}
-                onBlur={() => setNameFocused(false)}
+                onBlur={() => setNameFocused(false)} value={email} onChangeText={t => setEmail(t)}
                 style={[styles.input, styles.topInput, nameFocused ? styles.shadowTopInput : {}]} />
                 <View>
                     <TextInput placeholder='Senha' onFocus={() => setLastNameFocused(true)}
                     onBlur={() => setLastNameFocused(false)} secureTextEntry={!eye}
+                    value={password} onChangeText={t => setPassword(t)}
                     style={[styles.input, styles.bottomInput, lastNameFocused ? styles.shadowBottomInput : {}]} />
                     {eye ? (
                         <Feather onPress={() => setEye(!eye)}
@@ -44,7 +77,7 @@ const Register2 = () => {
                         style={styles.eye} size={25} color='#8257E5' name='eye-off' />
                     )}
                 </View>
-                <RectButton style={styles.button}>
+                <RectButton onPress={handleRegister} style={styles.button}>
                     <Text style={styles.buttonText}>Concluir cadastro</Text>
                 </RectButton>
             </View>

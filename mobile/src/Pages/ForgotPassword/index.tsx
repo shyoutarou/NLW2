@@ -25,7 +25,7 @@ const ForgotPassword = () => {
                 email
             })
 
-            Alert.alert('Sucesso!', 'Uma redefinição de senha foi enviada ao seu email!')
+            navigation.navigate('ForgotPasswordSuccess')
         } catch (e) {
             Alert.alert('Erro', 'Email inexistente!')
         }

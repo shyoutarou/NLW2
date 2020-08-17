@@ -10,6 +10,9 @@ const Register = () => {
     const [nameFocused, setNameFocused] = useState(false)
     const [lastNameFocused, setLastNameFocused] = useState(false)
 
+    const [name, setName] = useState('')
+    const [lastName, setLastName] = useState('')
+
     return (
         <View style={styles.container}>
             <View style={styles.topBar}>
@@ -31,12 +34,16 @@ const Register = () => {
             <View style={styles.form}>
                 <Text style={styles.formTitle}>01. Quem é você?</Text>
                 <TextInput placeholder='Nome' onFocus={() => setNameFocused(true)}
-                onBlur={() => setNameFocused(false)}
+                onBlur={() => setNameFocused(false)} value={name} onChangeText={t => setName(t)}
                 style={[styles.input, styles.topInput, nameFocused ? styles.shadowTopInput : {}]} />
                 <TextInput placeholder='Sobrenome' onFocus={() => setLastNameFocused(true)}
-                onBlur={() => setLastNameFocused(false)}
+                onBlur={() => setLastNameFocused(false)} value={lastName} onChangeText={t => setLastName(t)}
                 style={[styles.input, styles.bottomInput, lastNameFocused ? styles.shadowBottomInput : {}]} />
-                <RectButton style={styles.button}>
+                <RectButton onPress={() => {
+                    navigation.navigate('Register2', {
+                        name: `${name} ${lastName}`
+                    })
+                }} style={styles.button}>
                     <Text style={styles.buttonText}>Próximo</Text>
                 </RectButton>
             </View>

@@ -1,8 +1,10 @@
 import React, { useState } from 'react'
-import { View, Text, StyleSheet, Image, ImageBackground } from 'react-native'
+import { View, Text, StyleSheet, Image, ImageBackground, Alert } from 'react-native'
 import { TextInput, TouchableOpacity, RectButton } from 'react-native-gesture-handler'
 import { Feather } from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/native'
+import api from '../../services/api'
+import AsyncStorage from '@react-native-community/async-storage'
 
 const Login = () => {
 
@@ -12,6 +14,26 @@ const Login = () => {
     const [passwordFocus, setPasswordFocus] = useState(false)
     const [checkbox, setCheckbox] = useState(false)
     const [eye, setEye] = useState(false)
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+
+    const handleLogin = async () => {
+        try {
+            const resp = await api.post('/profiles', {
+                email, password
+            })
+
+            if(checkbox) {
+                AsyncStorage.setItem('token', resp.data.token)
+            }
+
+            navigation.navigate('Landing', {
+                user: resp.data.user
+            })
+        } catch (err) {
+            Alert.alert('Erro', 'Usuário ou senha incorretos')
+        }
+    }
 
     return (
         <View style={styles.container}>
@@ -33,14 +55,14 @@ const Login = () => {
                 <View style={styles.inputs}>
                     <View>
                         <TextInput onFocus={() => setEmailFocus(true)}
-                        onBlur={() => setEmailFocus(false)}
+                        onBlur={() => setEmailFocus(false)} value={email} onChangeText={t => setEmail(t)}
                         placeholder='E-mail' style={[styles.input, styles.topInput]} />
                         <View style={[styles.emailBar, { opacity: emailFocus ? 1 : 0 }]} />
                     </View>
                     <View>
                         <TextInput onFocus={() => setPasswordFocus(true)}
-                        onBlur={() => setPasswordFocus(false)}
-                        secureTextEntry={eye} placeholder='Senha'
+                        onBlur={() => setPasswordFocus(false)} value={password}
+                        secureTextEntry={eye} placeholder='Senha' onChangeText={t => setPassword(t)}
                         style={[styles.input, styles.bottomInput]} />
                         {eye ? <Feather onPress={() => setEye(!eye)}
                         color="#8257E5" size={20} name='eye-off' style={styles.eye} />
@@ -60,7 +82,7 @@ const Login = () => {
                         <Text style={styles.textDescription}>Esqueci minha senha</Text>
                     </TouchableOpacity>
                 </View>
-                <RectButton style={styles.button}>
+                <RectButton onPress={handleLogin} style={styles.button}>
                     <Text style={styles.textButton}>Entrar</Text>
                 </RectButton>
             </View>

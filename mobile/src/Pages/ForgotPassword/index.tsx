@@ -1,14 +1,35 @@
 import React, { useState } from 'react'
-import { View, Text, StyleSheet, Image, ImageBackground } from 'react-native'
+import { View, Text, StyleSheet, Image, ImageBackground, Alert } from 'react-native'
 import { TextInput, TouchableOpacity, RectButton } from 'react-native-gesture-handler'
 import { Feather } from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/native'
+import api from '../../services/api'
 
 const ForgotPassword = () => {
 
     const navigation = useNavigation()
 
     const [emailFocus, setEmailFocus] = useState(false)
+    const [email, setEmail] = useState('')
+
+    const handleEmail = async () => {
+
+        setEmail('')
+
+        if(!email.match(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)) {
+            return Alert.alert('Erro' ,'Email inválido!')
+        }
+
+        try {
+            await api.post('/profiles/resetpassword', {
+                email
+            })
+
+            Alert.alert('Sucesso!', 'Uma redefinição de senha foi enviada ao seu email!')
+        } catch (e) {
+            Alert.alert('Erro', 'Email inexistente!')
+        }
+    }
 
     return (
         <View style={styles.container}>
@@ -28,13 +49,14 @@ const ForgotPassword = () => {
                 <View style={styles.inputs}>
                     <View>
                         <TextInput onFocus={() => setEmailFocus(true)}
-                        onBlur={() => setEmailFocus(false)}
-                        placeholder='E-mail' style={styles.input} />
+                        onBlur={() => setEmailFocus(false)} value={email}
+                        placeholder='E-mail' style={styles.input}
+                        onChangeText={text => setEmail(text)} />
                         <View style={[styles.emailBar, { opacity: emailFocus ? 1 : 0 }]} />
                     </View>
                 </View>
-                <RectButton style={styles.button}>
-                    <Text style={styles.textButton}>Entrar</Text>
+                <RectButton onPress={handleEmail} style={styles.button}>
+                    <Text style={styles.textButton}>Enviar redefinição</Text>
                 </RectButton>
             </View>
         </View>

@@ -1,7 +1,8 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { View, Text, StyleSheet, Image, ImageBackground, Picker } from 'react-native'
 import PageHeader from '../../Components/PageHeader'
 import DateTimePicker from '@react-native-community/datetimepicker'
+import UserContext from '../../Contexts/UserContext'
 import { RectButton, TextInput, ScrollView, TouchableOpacity } from 'react-native-gesture-handler'
 
 const GiveClasses = () => {
@@ -12,6 +13,8 @@ const GiveClasses = () => {
     const [editingValue, setEditingValue] = useState('')
     const [showPicker, setShowPicker] = useState(false)
 
+    const User = useContext(UserContext)
+    
     return (
         <ScrollView>
             <PageHeader label='Meu perfil' title='Que incrível que você quer dar aulas!'>

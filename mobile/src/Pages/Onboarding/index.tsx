@@ -18,7 +18,7 @@ const Onboarding: React.FC<Onboarding> = ({ boardType, number, description }) =>
             navigation.navigate('GiveClassBoard')
         } else {
             await AsyncStorage.setItem('firstTime', 'false')
-            navigation.navigate('Landing')
+            navigation.navigate('Login')
         }
     }
 

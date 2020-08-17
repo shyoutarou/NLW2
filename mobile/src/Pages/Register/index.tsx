@@ -2,9 +2,11 @@ import React, { useState } from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 import { Feather } from '@expo/vector-icons'
 import { TouchableOpacity, TextInput, RectButton } from 'react-native-gesture-handler'
+import { useNavigation } from '@react-navigation/native'
 
 const Register = () => {
 
+    const navigation = useNavigation()
     const [nameFocused, setNameFocused] = useState(false)
     const [lastNameFocused, setLastNameFocused] = useState(false)
 
@@ -15,7 +17,7 @@ const Register = () => {
                     <View style={styles.ball}></View>
                     <View style={styles.ballOff}></View>
                 </View>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={() => navigation.goBack()}>
                     <Feather color='#9C98A6' name='arrow-left' size={25} />
                 </TouchableOpacity>
             </View>

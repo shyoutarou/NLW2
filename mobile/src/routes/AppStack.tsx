@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, createContext } from 'react'
 import { AppLoading } from 'expo'
 import { YellowBox, Alert } from 'react-native'
 import { NavigationContainer } from '@react-navigation/native'
@@ -22,7 +22,7 @@ const { Navigator, Screen } = createStackNavigator()
 
 
 const AppStack = () => {
-    
+
     useEffect(() => {
         AsyncStorage.getItem('firstTime').then(resp => {
             if(resp) {
@@ -49,7 +49,7 @@ const AppStack = () => {
 
     return (
         <NavigationContainer>
-            <Navigator initialRouteName={/*firstTime === 'true' ? 'StudyBoard' : 'Landing'*/'GiveClasses'} headerMode='none'>
+            <Navigator initialRouteName={firstTime === 'true' ? 'StudyBoard' : 'Login'} headerMode='none'>
                 <Screen name='StudyBoard' component={() => <Onboarding number='01.' boardType='study'
                 description='Encontre vários professores para ensinar você.' />} />
                 <Screen name='GiveClassBoard' component={() => <Onboarding number='02.' boardType='give-class'
